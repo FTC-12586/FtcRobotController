@@ -1,9 +1,10 @@
-package org.firstinspires.ftc.teamcode.robotAttachments.odometry;
+package org.firstinspires.ftc.teamcode.src.robotAttachments.odometry;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ReadWriteFile;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 
 import java.io.File;
@@ -18,7 +19,7 @@ public class OdometryGlobalCoordinatePosition implements Runnable {
     private final DcMotor verticalEncoderRight;
     private final DcMotor horizontalEncoder;
 
-    private final double COUNTS_PER_INCH;
+    private final double COUNTS_PER_INCH = 1892.3724283364;
 
     private boolean isActive = false;
 
@@ -44,6 +45,7 @@ public class OdometryGlobalCoordinatePosition implements Runnable {
     private int verticalLeftEncoderPositionMultiplier = 1;
     private int verticalRightEncoderPositionMultiplier = 1;
     private int normalEncoderPositionMultiplier = 1;
+    private double angleOffset = 0;
 
     /**
      * Constructor for GlobalCoordinatePosition Thread
@@ -53,11 +55,10 @@ public class OdometryGlobalCoordinatePosition implements Runnable {
      * @param horizontalEncoder    horizontal odometry encoder, perpendicular to the other two odometry encoder wheels
      * @param threadSleepDelay     delay in milliseconds for the GlobalPositionUpdate thread (50-75 milliseconds is suggested)
      */
-    public OdometryGlobalCoordinatePosition(DcMotor verticalEncoderLeft, DcMotor verticalEncoderRight, DcMotor horizontalEncoder, double COUNTS_PER_INCH, int threadSleepDelay) {
+    public OdometryGlobalCoordinatePosition(DcMotor verticalEncoderLeft, DcMotor verticalEncoderRight, DcMotor horizontalEncoder, int threadSleepDelay) {
         this.verticalEncoderLeft = verticalEncoderLeft;
         this.verticalEncoderRight = verticalEncoderRight;
         this.horizontalEncoder = horizontalEncoder;
-        this.COUNTS_PER_INCH = COUNTS_PER_INCH;
         sleepTime = threadSleepDelay;
 
         robotEncoderWheelDistance = Double.parseDouble(ReadWriteFile.readFile(wheelBaseSeparationFile).trim()) * COUNTS_PER_INCH;
@@ -74,13 +75,32 @@ public class OdometryGlobalCoordinatePosition implements Runnable {
         return ports;
     }
 
+    public void showPosition(Telemetry telemetry) {
+        telemetry.addData("X: ", this.returnRelativeXPosition());
+        telemetry.addData("Y: ", this.returnRelativeYPosition());
+        telemetry.addData("Rotation: ", this.returnOrientation());
+        telemetry.update();
+    }
+
     public double getCOUNTS_PER_INCH() {
         return COUNTS_PER_INCH;
     }
 
+    public int returnRightEncoderPosition() {
+        return verticalRightEncoderPositionMultiplier * verticalEncoderRight.getCurrentPosition();
+    }
+
+    public int returnLeftEncoderPosition() {
+        return verticalLeftEncoderPositionMultiplier * verticalEncoderLeft.getCurrentPosition();
+    }
+
+    public int returnHorizontalEncoderPosition() {
+        return normalEncoderPositionMultiplier * horizontalEncoder.getCurrentPosition();
+    }
+
     //Vertical Right, Vertical Left, Horizontal
-    public Integer[] returnRaw() {
-        Integer[] positions = new Integer[3];
+    public int[] returnRaw() {
+        int[] positions = new int[3];
         positions[0] = verticalEncoderRight.getCurrentPosition();
         positions[1] = verticalEncoderLeft.getCurrentPosition();
         positions[2] = horizontalEncoder.getCurrentPosition();
@@ -96,14 +116,19 @@ public class OdometryGlobalCoordinatePosition implements Runnable {
     }
 
     public boolean setPosition(double x, double y, double angle) {
-        if (isActive) {
-            return false;
-        } else {
-            robotGlobalXCoordinatePosition = x * COUNTS_PER_INCH;
-            robotGlobalYCoordinatePosition = y * COUNTS_PER_INCH;
-            robotOrientationRadians = Math.toRadians(angle);
-            return true;
+
+        while (isActive) {
+            continue;
         }
+        robotGlobalXCoordinatePosition = x * COUNTS_PER_INCH;
+        robotGlobalYCoordinatePosition = y * COUNTS_PER_INCH;
+        if (imu != null) {
+            angleOffset = Math.toRadians(angle);
+        } else {
+            robotOrientationRadians = Math.toRadians(angle);
+        }
+        return true;
+
     }
 
     public boolean isActive() {
@@ -132,7 +157,8 @@ public class OdometryGlobalCoordinatePosition implements Runnable {
     private void globalCoordinatePositionUpdate() {
         isActive = true;
         if (imu != null) {
-            robotOrientationRadians = Math.toRadians(getImu());
+            robotOrientationRadians = Math.toRadians(getImu()) + angleOffset;
+            robotOrientationRadians = robotOrientationRadians % 360;
         }
         //Get Current Positions
         verticalLeftEncoderWheelPosition = (verticalEncoderLeft.getCurrentPosition() * verticalLeftEncoderPositionMultiplier);
@@ -168,7 +194,7 @@ public class OdometryGlobalCoordinatePosition implements Runnable {
      *
      * @return global x coordinate
      */
-    public double returnXCoordinate() {
+    public double returnRawXCoordinate() {
         return robotGlobalXCoordinatePosition;
     }
 
@@ -177,7 +203,7 @@ public class OdometryGlobalCoordinatePosition implements Runnable {
      *
      * @return global y coordinate
      */
-    public double returnYCoordinate() {
+    public double returnRawYCoordinate() {
         return robotGlobalYCoordinatePosition;
     }
 
@@ -190,10 +216,18 @@ public class OdometryGlobalCoordinatePosition implements Runnable {
         return Math.toDegrees(robotOrientationRadians) % 360;
     }
 
+    public double returnRelativeXPosition() {
+        return robotGlobalXCoordinatePosition / COUNTS_PER_INCH;
+    }
+
+    public double returnRelativeYPosition() {
+        return robotGlobalYCoordinatePosition / COUNTS_PER_INCH;
+    }
+
     /**
      * Stops the position update thread
      */
-    protected void stop() {
+    public void stop() {
         isRunning = false;
     }
 

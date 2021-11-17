@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.robotAttachments.odometry;
+package org.firstinspires.ftc.teamcode.src.robotAttachments.odometry;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -32,8 +32,8 @@ public class OdometryCalibration extends LinearOpMode {
     BNO055IMU imu;
 
     //Hardware Map Names for drive motors and odometry wheels. THIS WILL CHANGE ON EACH ROBOT, YOU NEED TO UPDATE THESE VALUES ACCORDINGLY
-    String rfName = "back_left", rbName = "front_left", lfName = "back_right", lbName = "front_right";
-    String verticalLeftEncoderName = rbName, verticalRightEncoderName = lbName, horizontalEncoderName = lfName;
+    String rfName = "front_right", rbName = "back_right", lfName = "front_left", lbName = "back_left ";
+    String verticalLeftEncoderName = lfName, verticalRightEncoderName = rfName, horizontalEncoderName = rbName;
 
     final double PIVOT_SPEED = 0.15;
 
