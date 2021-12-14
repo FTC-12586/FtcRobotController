@@ -35,9 +35,6 @@ public class OdometryGlobalCoordinatePosition extends ThreadedSubsystemTemplate 
     private final double robotEncoderWheelDistance;
     private final double horizontalEncoderTickPerDegreeOffset;
 
-    //Sleep time interval (milliseconds) for the position update thread
-    private final int sleepTime;
-
     //Files to access the algorithm constants
     private final File wheelBaseSeparationFile = AppUtil.getInstance().getSettingsFile("wheelBaseSeparation.txt");
     private final File horizontalTickOffsetFile = AppUtil.getInstance().getSettingsFile("horizontalTickOffset.txt");
