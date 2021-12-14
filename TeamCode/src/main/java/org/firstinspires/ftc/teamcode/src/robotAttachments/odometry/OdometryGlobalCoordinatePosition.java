@@ -131,7 +131,7 @@ public class OdometryGlobalCoordinatePosition extends ThreadedSubsystemTemplate 
         return isActive;
     }
 
-    protected double getImu() {
+    protected double getImuAngle() {
         double returnVal = 0;
         if (imu.getAngularOrientation().firstAngle < 0) {
             returnVal = Math.abs(imu.getAngularOrientation().firstAngle);
@@ -155,7 +155,7 @@ public class OdometryGlobalCoordinatePosition extends ThreadedSubsystemTemplate 
         isActive = true;
         synchronized (lock) {
             if (imu != null) {
-                robotOrientationRadians = Math.toRadians(getImu()) + angleOffset;
+                robotOrientationRadians = Math.toRadians(getImuAngle()) + angleOffset;
                 robotOrientationRadians = robotOrientationRadians % 360;
             }
             //Get Current Positions
