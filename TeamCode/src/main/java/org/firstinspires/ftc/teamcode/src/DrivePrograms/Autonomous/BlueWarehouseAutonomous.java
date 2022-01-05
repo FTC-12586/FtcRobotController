@@ -25,11 +25,6 @@ public class BlueWarehouseAutonomous extends AutoObjDetectionTemplate {
             Pos = this.getAverageOfMarker(10, 100);
             checkStop();
 
-           /* if(Pos != MarkerPosition.NotSeen){
-                leds.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK);
-            }
-
-            */
             telemetry.addData("Position", Pos);
             telemetry.update();
         }

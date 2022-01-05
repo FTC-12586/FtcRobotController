@@ -34,8 +34,13 @@ public class GlobalCoordinatePositionUpdateSample extends LinearOpMode {
     final double COUNTS_PER_INCH = 1892.3724283364;
 
     //Hardware Map Names for drive motors and odometry wheels.
-    String rfName = "back_left", rbName = "front_left", lfName = "back_right", lbName = "front_right";
-    String verticalLeftEncoderName = rbName, verticalRightEncoderName = lbName, horizontalEncoderName = lfName;
+    final String rfName = "back_left";
+    final String rbName = "front_left";
+    final String lfName = "back_right";
+    final String lbName = "front_right";
+    final String verticalLeftEncoderName = rbName;
+    final String verticalRightEncoderName = lbName;
+    final String horizontalEncoderName = lfName;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -90,10 +95,10 @@ public class GlobalCoordinatePositionUpdateSample extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
-        /**
-         * *****************
-         * OpMode Begins Here
-         * *****************
+        /*
+          *****************
+          OpMode Begins Here
+          *****************
          */
         double PIVOT_SPEED = 0.2;
         try {

@@ -10,6 +10,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.src.Utills.AutonomousTemplate;
 
 import java.util.List;
+import java.util.Locale;
 
 @Disabled
 @Autonomous(name = "TeamModelObjectDetectionTest")
@@ -66,10 +67,10 @@ public class TeamModelObjectDetectionTest extends AutonomousTemplate {
         initVuforia();
         initTfod();
 
-        /**
-         * Activate TensorFlow Object Detection before we wait for the start command.
-         * Do it here so that the Camera Stream window will have the TensorFlow annotations visible.
-         **/
+        /*
+          Activate TensorFlow Object Detection before we wait for the start command.
+          Do it here so that the Camera Stream window will have the TensorFlow annotations visible.
+         */
         if (tfod != null) {
             tfod.activate();
 
@@ -82,7 +83,7 @@ public class TeamModelObjectDetectionTest extends AutonomousTemplate {
             tfod.setZoom(2, 16.0 / 9.0);
         }
 
-        /** Wait for the game to begin */
+        /* Wait for the game to begin */
         telemetry.addData(">", "Press Play to start op mode");
         telemetry.update();
 
@@ -99,10 +100,10 @@ public class TeamModelObjectDetectionTest extends AutonomousTemplate {
                         // step through the list of recognitions and display boundary info.
                         int i = 0;
                         for (Recognition recognition : updatedRecognitions) {
-                            telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                            telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                            telemetry.addData(String.format(Locale.ENGLISH, "label (%d)", i), recognition.getLabel());
+                            telemetry.addData(String.format(Locale.ENGLISH, "left,top (%d)", i), "%.03f , %.03f",
                                     recognition.getLeft(), recognition.getTop());
-                            telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                            telemetry.addData(String.format(Locale.ENGLISH, "right,bottom (%d)", i), "%.03f , %.03f",
                                     recognition.getRight(), recognition.getBottom());
                             i++;
                         }

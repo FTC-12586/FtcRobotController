@@ -21,12 +21,12 @@ import java.util.HashMap;
  */
 public class ContinuousIntake {
     final static double forwardPower = 1;
-    DcMotor intakeMotor;
+    final DcMotor intakeMotor;
 
 
     private static final double BucketUpPosition = .98;
     private static final double BucketDownPosition = .46;
-    Servo slantServo;
+    final Servo slantServo;
     public ColorRangeSensor intakeSensor;
     public DistanceSensor intakeSensor_D;
 
@@ -130,49 +130,18 @@ public class ContinuousIntake {
             put("blue", (double) (intakeSensor.blue()));
             put("alpha", (double) (intakeSensor.red()));
         }};
-        return colorKey.get(color).doubleValue();
+        return colorKey.get(color);
     }
 
-
-   /* public double getColor(String color) {
-        int i;
-
-        double[] colorNumber = {intakeSensor.red(), intakeSensor.blue(), intakeSensor.green(), intakeSensor.alpha(), intakeSensor.argb()};
-        switch (color) {
-            case "red":
-                i = 0;
-                break;
-            case "blue":
-                i = 1;
-                break;
-            case "green":
-                i = 2;
-                break;
-            case "alpha":
-                i = 3;
-                break;
-            case "argb":
-                i = 4;
-                break;
-            default:
-                i = 0;
-        }
-        return colorNumber[i];
-
-    }
-
-    */
 
     public double[] getRGB() {
 
-        double[] colorNumber = {intakeSensor.red(), intakeSensor.green(), intakeSensor.blue()};
-        return colorNumber;
+        return new double[]{intakeSensor.red(), intakeSensor.green(), intakeSensor.blue()};
 
     }
 
     public double getCloseDistance() {
-        double distance = intakeSensor.getDistance(DistanceUnit.INCH);
-        return distance;
+        return intakeSensor.getDistance(DistanceUnit.INCH);
     }
 
 
@@ -227,30 +196,9 @@ public class ContinuousIntake {
     }
 
     public RevBlinkinLedDriver.BlinkinPattern getLEDPatternFromFreight() {
-        RevBlinkinLedDriver.BlinkinPattern o = gameObject.RevColorOfObj.get(ContinuousIntake.gameObject.identify(this.getRGB()));
-        return o;
+        return gameObject.RevColorOfObj.get(gameObject.identify(this.getRGB()));
     }
 
-
-
-    /*
-    @Deprecated
-    private RevBlinkinLedDriver.BlinkinPattern getRevColorFromEnum(gameObject o) {
-        switch (o) {
-            case BALL:
-                return RevBlinkinLedDriver.BlinkinPattern.WHITE;
-            case CUBESMOOTH:
-                return RevBlinkinLedDriver.BlinkinPattern.ORANGE;
-            case CUBEWAFFLE:
-                return RevBlinkinLedDriver.BlinkinPattern.ORANGE;
-            case DUCK:
-                return RevBlinkinLedDriver.BlinkinPattern.GREEN;
-            case EMPTY:
-                return RevBlinkinLedDriver.BlinkinPattern.BLACK;
-        }
-        return RevBlinkinLedDriver.BlinkinPattern.BLACK;
-    }
-     */
 
     public enum gameObject {
         BALL,
@@ -258,7 +206,7 @@ public class ContinuousIntake {
         CUBEWAFFLE,
         DUCK,
         EMPTY;
-        protected static final ArrayList<gameObject> gameObjectList = new ArrayList<gameObject>(Arrays.asList(gameObject.values()));
+        protected static final ArrayList<gameObject> gameObjectList = new ArrayList<>(Arrays.asList(gameObject.values()));
 
         protected static final HashMap<gameObject, BlinkinPattern> RevColorOfObj = new HashMap<gameObject, BlinkinPattern>() {{
             put(gameObject.BALL, BlinkinPattern.WHITE);
@@ -284,6 +232,7 @@ public class ContinuousIntake {
                 originalRGB[x] = gameObject.RGBOfObj.get((gameObject.gameObjectList.get(x)));
             }
             for (int x = 0; x < size; x++) {
+                assert originalRGB[x] != null;
                 differences[x] = getDifferenceOfColor(RGB, originalRGB[x]);
             }
             double smallestValue = Double.MAX_VALUE;

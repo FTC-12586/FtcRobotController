@@ -22,7 +22,6 @@ public class OdometryGlobalCoordinatePosition extends ThreadedSubsystemTemplate 
     private static final Object lock = new Object();
 
     private final double COUNTS_PER_INCH = 1892.3724283364;
-    private volatile boolean isActive = false;
 
 
     //Position variables used for storage and calculations
@@ -33,10 +32,6 @@ public class OdometryGlobalCoordinatePosition extends ThreadedSubsystemTemplate 
     //Algorithm constants
     private final double robotEncoderWheelDistance;
     private final double horizontalEncoderTickPerDegreeOffset;
-
-    //Files to access the algorithm constants
-    private final File wheelBaseSeparationFile = AppUtil.getInstance().getSettingsFile("wheelBaseSeparation.txt");
-    private final File horizontalTickOffsetFile = AppUtil.getInstance().getSettingsFile("horizontalTickOffset.txt");
 
     private int verticalLeftEncoderPositionMultiplier = 1;
     private int verticalRightEncoderPositionMultiplier = 1;
@@ -58,6 +53,11 @@ public class OdometryGlobalCoordinatePosition extends ThreadedSubsystemTemplate 
         this.horizontalEncoder = horizontalEncoder;
         sleepTime = threadSleepDelay;
 
+        //Files to access the algorithm constants
+        File wheelBaseSeparationFile = AppUtil.getInstance().getSettingsFile("wheelBaseSeparation.txt");
+        File horizontalTickOffsetFile = AppUtil.getInstance().getSettingsFile("horizontalTickOffset.txt");
+
+        //Reading constants into memory
         robotEncoderWheelDistance = Double.parseDouble(ReadWriteFile.readFile(wheelBaseSeparationFile).trim()) * COUNTS_PER_INCH;
         this.horizontalEncoderTickPerDegreeOffset = Double.parseDouble(ReadWriteFile.readFile(horizontalTickOffsetFile).trim());
 
@@ -125,13 +125,9 @@ public class OdometryGlobalCoordinatePosition extends ThreadedSubsystemTemplate 
 
     }
 
-    @Deprecated
-    public boolean isActive() {
-        return isActive;
-    }
 
     protected double getImuAngle() {
-        double returnVal = 0;
+        double returnVal;
         if (imu.getAngularOrientation().firstAngle < 0) {
             returnVal = Math.abs(imu.getAngularOrientation().firstAngle);
         } else {
@@ -151,7 +147,6 @@ public class OdometryGlobalCoordinatePosition extends ThreadedSubsystemTemplate 
      * Updates the global (x, y, theta) coordinate position of the robot using the odometry encoders
      */
     protected void threadMain() {
-        isActive = true;
         synchronized (lock) {
             if (imu != null) {
                 robotOrientationRadians = Math.toRadians(getImuAngle()) + angleOffset;
@@ -174,17 +169,15 @@ public class OdometryGlobalCoordinatePosition extends ThreadedSubsystemTemplate 
             double horizontalChange = rawHorizontalChange - (changeInRobotOrientation * horizontalEncoderTickPerDegreeOffset);
 
             double p = ((rightChange + leftChange) / 2);
-            double n = horizontalChange;
 
             //Calculate and update the position values
-            robotGlobalXCoordinatePosition = robotGlobalXCoordinatePosition + (p * Math.sin(robotOrientationRadians) + n * Math.cos(robotOrientationRadians));
-            robotGlobalYCoordinatePosition = robotGlobalYCoordinatePosition + (p * Math.cos(robotOrientationRadians) - n * Math.sin(robotOrientationRadians));
+            robotGlobalXCoordinatePosition = robotGlobalXCoordinatePosition + (p * Math.sin(robotOrientationRadians) + horizontalChange * Math.cos(robotOrientationRadians));
+            robotGlobalYCoordinatePosition = robotGlobalYCoordinatePosition + (p * Math.cos(robotOrientationRadians) - horizontalChange * Math.sin(robotOrientationRadians));
 
             previousVerticalLeftEncoderWheelPosition = verticalLeftEncoderWheelPosition;
             previousVerticalRightEncoderWheelPosition = verticalRightEncoderWheelPosition;
             prevNormalEncoderWheelPosition = normalEncoderWheelPosition;
         }
-        isActive = false;
     }
 
     /**

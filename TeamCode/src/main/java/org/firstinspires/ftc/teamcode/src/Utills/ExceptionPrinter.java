@@ -6,9 +6,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public class ExceptionPrinter {
-    Telemetry telemetry;
-    String exceptionString;
-    Exception error;
+    final Telemetry telemetry;
+    final String exceptionString;
+    final Exception error;
 
     public ExceptionPrinter(Exception error, Telemetry telemetry) {
         StringWriter sw = new StringWriter();

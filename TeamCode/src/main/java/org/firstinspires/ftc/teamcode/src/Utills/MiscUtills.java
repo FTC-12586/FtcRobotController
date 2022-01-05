@@ -19,6 +19,11 @@ public class MiscUtills {
         return num;
     }
 
+    /**
+     * @param num this is a number
+     * @return It returns the given number within a bound of -1 to 1
+     * this method is often used to adjust variables used for drive control
+     */
     public static float boundNumber(float num) {
         if (num > 1.0) {
             return 1.0F;
@@ -48,8 +53,7 @@ public class MiscUtills {
      * @return It returns the y value
      */
     public double linearEquation(double m, double b, double x) {
-        double y = (m * x) + b;
-        return y;
+        return (m * x) + b;
     }
 
 

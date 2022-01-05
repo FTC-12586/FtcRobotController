@@ -173,7 +173,7 @@ public class OdometryDrivetrain extends BasicDrivetrain {
      */
     public void moveToPosition(double x, double y, double tolerance, boolean consoleOutput) throws InterruptedException {
         final String s = x + " , " + y;
-        double power = 0;
+        double power;
         //by setting distance to max value, we make sure that the loop will execute once
         //by recalculating distance in the loop rather than in the while parenthesises, we remove one distance() call
         double distance = Double.MAX_VALUE;
@@ -225,7 +225,7 @@ public class OdometryDrivetrain extends BasicDrivetrain {
 
     public void moveToPositionWithTurn(double x, double y, double rotate, double tolerance, boolean consoleOutput) throws InterruptedException {
         final String s = x + " , " + y;
-        double power = 0;
+        double power;
         //by setting distance to max value, we make sure that the loop will execute once
         //by recalculating distance in the loop rather than in the while parenthesises, we remove one distance() call
         double distance = Double.MAX_VALUE;

@@ -50,7 +50,9 @@ public class MLTest extends AutoObjDetectionTemplate {
 
         }
         telemetry.update();
-        while (opModeIsActive() && !isStopRequested()) ;
+        while (opModeIsActive() && !isStopRequested()) {
+            Thread.sleep(1);
+        }
 
     }
 }

@@ -78,16 +78,6 @@ public class BlueCarouselAutonomous extends AutoObjDetectionTemplate {
                     Thread.sleep(700);
                     driveSystem.stopAll();
 
-                /*driveSystem.moveToPosition(126, 1, 1.5, true);
-                driveSystem.strafeAtAngle(180 + 35, .5);
-                Thread.sleep(500);
-                spinner.spinOffBlueDuck();
-                driveSystem.moveToPosition(105, 132, 1);
-                driveSystem.strafeAtAngle(180, 0.5);
-                Thread.sleep(1000);
-
-                 */
-
 
                     break;
                 case Right:

@@ -15,9 +15,9 @@ public class OdometryPodServos {
     private static final double horizontalServoRaisePosition = 0.4;
     private static final double horizontalServoLowerPosition = 0.69;
 
-    Servo horizontalServo;
-    Servo leftServo;
-    Servo rightServo;
+    final Servo horizontalServo;
+    final Servo leftServo;
+    final Servo rightServo;
 
     public OdometryPodServos(HardwareMap hardwareMap, String rightServoName, String leftServoName, String horizontalServoName) {
         this.horizontalServo = hardwareMap.servo.get(horizontalServoName);
@@ -25,7 +25,7 @@ public class OdometryPodServos {
         this.leftServo = hardwareMap.servo.get(leftServoName);
     }
 
-    public void lower(){
+    public void lower() {
         horizontalServo.setPosition(horizontalServoLowerPosition);
         rightServo.setPosition(rightServoLowerPosition);
         leftServo.setPosition(leftServoLowerPosition);
