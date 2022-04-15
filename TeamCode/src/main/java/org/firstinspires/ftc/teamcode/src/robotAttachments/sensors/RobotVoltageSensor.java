@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 /**
  * A wrapper class for the Robot Voltage sensor
  */
-public class RobotVoltageSensor {
+public class RobotVoltageSensor implements VoltageSensor {
     /**
      * Internal voltage sensor object
      */
@@ -42,5 +42,35 @@ public class RobotVoltageSensor {
      */
     public double getVoltage() {
         return sensor.getVoltage();
+    }
+
+    @Override
+    public Manufacturer getManufacturer() {
+        return sensor.getManufacturer();
+    }
+
+    @Override
+    public String getDeviceName() {
+        return sensor.getDeviceName();
+    }
+
+    @Override
+    public String getConnectionInfo() {
+        return sensor.getConnectionInfo();
+    }
+
+    @Override
+    public int getVersion() {
+        return sensor.getVersion();
+    }
+
+    @Override
+    public void resetDeviceConfigurationForOpMode() {
+        sensor.resetDeviceConfigurationForOpMode();
+    }
+
+    @Override
+    public void close() {
+        sensor.close();
     }
 }

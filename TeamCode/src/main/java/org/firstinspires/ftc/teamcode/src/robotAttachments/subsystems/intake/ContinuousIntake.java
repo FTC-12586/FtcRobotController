@@ -6,11 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
-import org.firstinspires.ftc.teamcode.src.utills.Controllable;
-
-public class ContinuousIntake implements Controllable<Void> {
+public class ContinuousIntake implements Intake {
     /**
      * The power for going forward for the front motor
      */
@@ -31,11 +28,8 @@ public class ContinuousIntake implements Controllable<Void> {
      */
     private final DcMotor backIntakeMotor;
 
-    private final TouchSensor TSLeft;
 
-    private final TouchSensor TSRight;
-
-    public ContinuousIntake(HardwareMap hardwareMap, String frontMotorName, String backMotorName, String leftTS, String rightTS) {
+    public ContinuousIntake(HardwareMap hardwareMap, String frontMotorName, String backMotorName) {
         frontIntakeMotor = hardwareMap.dcMotor.get(frontMotorName);
         frontIntakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontIntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -47,41 +41,8 @@ public class ContinuousIntake implements Controllable<Void> {
         backIntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backIntakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         backIntakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        TSRight = hardwareMap.touchSensor.get(rightTS);
-        TSLeft = hardwareMap.touchSensor.get(leftTS);
-
-    }
-
-    public ContinuousIntake(DcMotor frontMotor, DcMotor backMotor) {
-        frontIntakeMotor = frontMotor;
-        backIntakeMotor = backMotor;
-        TSRight = null;
-        TSLeft = null;
-    }
 
 
-    /**
-     * this turns on the intake motor to intake freight
-     */
-    public void turnIntakeOn() {
-        frontIntakeMotor.setPower(frontMotorForwardPower);
-        backIntakeMotor.setPower(backMotorForwardPower);
-    }
-
-    /**
-     * turns off the intake motor
-     */
-    public void turnIntakeOff() {
-        frontIntakeMotor.setPower(0);
-        backIntakeMotor.setPower(0);
-    }
-
-    /**
-     * reverses the intake motor to remove freight from the intake bucket
-     */
-    public void turnIntakeReverse() {
-        frontIntakeMotor.setPower(-frontMotorForwardPower);
-        backIntakeMotor.setPower(-backMotorForwardPower);
     }
 
     /**
@@ -91,10 +52,6 @@ public class ContinuousIntake implements Controllable<Void> {
     public void setMotorPower(double power) {
         frontIntakeMotor.setPower(power * frontMotorForwardPower);
         backIntakeMotor.setPower(power * backMotorForwardPower);
-    }
-
-    public boolean isSpaceBarPressed() {
-        return TSRight.isPressed() || TSLeft.isPressed();
     }
 
     public void halt() {

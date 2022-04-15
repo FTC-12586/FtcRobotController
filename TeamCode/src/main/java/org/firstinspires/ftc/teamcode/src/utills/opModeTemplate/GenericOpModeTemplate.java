@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.RobotLog;
 import com.qualcomm.robotcore.wifi.NetworkConnection;
 import com.qualcomm.robotcore.wifi.WifiDirectAssistant;
@@ -13,11 +14,15 @@ import com.qualcomm.robotcore.wifi.WifiDirectAssistant;
 import org.firstinspires.ftc.teamcode.src.robotAttachments.sensors.RobotVoltageSensor;
 import org.firstinspires.ftc.teamcode.src.robotAttachments.sensors.SpaceBar;
 import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.carouselspinner.CarouselSpinner;
+import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.carouselspinner.CarouselSpinnerImpl;
 import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.linearSlide.LinearSlide;
+import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.linearSlide.LinearSlideImpl;
 import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.outtake.Outtake;
 import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.outtake.StateOuttake;
-import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.podservos.OdometryPodServos;
+import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.podservos.OdometryServos;
+import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.podservos.OdometryServosImpl;
 import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.tapemeasureturret.TapeMeasureTurret;
+import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.tapemeasureturret.TapeMeasureTurretImpl;
 import org.firstinspires.ftc.teamcode.src.utills.MiscUtils;
 
 import java.util.concurrent.CancellationException;
@@ -126,7 +131,7 @@ public abstract class GenericOpModeTemplate extends LinearOpMode {
     /**
      * Allows the subsystems to look at voltage
      */
-    protected RobotVoltageSensor voltageSensor;
+    protected VoltageSensor voltageSensor;
     /**
      * Provides Carousel Spinner functionality
      */
@@ -134,7 +139,7 @@ public abstract class GenericOpModeTemplate extends LinearOpMode {
     /**
      * Provides methods for lifting and lowering Odometry servos
      */
-    protected OdometryPodServos podServos;
+    protected OdometryServos podServos;
 
     /**
      * Provides methods for using the robot LED's
@@ -237,7 +242,7 @@ public abstract class GenericOpModeTemplate extends LinearOpMode {
     }
 
     public void initTapeMeasureTurret() {
-        this.turret = new TapeMeasureTurret(hardwareMap, "tape_measure", "pitch", "yaw");
+        this.turret = new TapeMeasureTurretImpl(hardwareMap, "tape_measure", "pitch", "yaw");
     }
 
 
@@ -250,14 +255,14 @@ public abstract class GenericOpModeTemplate extends LinearOpMode {
      * Initializes the Odometry Servos
      */
     protected void initOdometryServos() {
-        podServos = new OdometryPodServos(hardwareMap, verticalRightServoName, verticalLeftServoName, horizontalServoName);
+        podServos = new OdometryServosImpl(hardwareMap, verticalRightServoName, verticalLeftServoName, horizontalServoName);
     }
 
     /**
      * Initializes the Spinner
      */
     protected void initSpinner() {
-        spinner = new CarouselSpinner(hardwareMap, leftCarouselSpinnerName, rightCarouselSpinnerName);
+        spinner = new CarouselSpinnerImpl(hardwareMap, leftCarouselSpinnerName, rightCarouselSpinnerName);
     }
 
 
@@ -293,7 +298,7 @@ public abstract class GenericOpModeTemplate extends LinearOpMode {
         if (voltageSensor == null) {
             this.initVoltageSensor();
         }
-        slide = new LinearSlide(hardwareMap, linearSlideMotorName);
+        slide = new LinearSlideImpl(hardwareMap, linearSlideMotorName);
     }
 
     /**

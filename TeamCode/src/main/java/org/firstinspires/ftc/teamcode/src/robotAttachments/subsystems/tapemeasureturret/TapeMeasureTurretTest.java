@@ -11,7 +11,7 @@ public class TapeMeasureTurretTest extends TeleOpTemplate {
 
     @Override
     public void opModeMain() {
-        final TapeMeasureTurret turret = new TapeMeasureTurret(hardwareMap, "tape_measure", "pitch", "yaw");
+        final TapeMeasureTurretImpl turret = new TapeMeasureTurretImpl(hardwareMap, "tape_measure", "pitch", "yaw");
 
         waitForStart();
 

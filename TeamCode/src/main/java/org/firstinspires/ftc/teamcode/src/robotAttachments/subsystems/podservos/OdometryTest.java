@@ -13,6 +13,7 @@ public class OdometryTest extends GenericOpModeTemplate {
     @Override
     public void opModeMain() throws InterruptedException {
         this.initOdometryServos();
+        OdometryServosImpl ps = (OdometryServosImpl) podServos;
         podServos.raise();
         waitForStart();
 
@@ -22,23 +23,23 @@ public class OdometryTest extends GenericOpModeTemplate {
 
         telemetry.addData("Wiggling Left Servo", 'y');
         telemetry.update();
-        podServos.leftServo.setPosition(OdometryPodServos.leftServoLowerPosition);
+        ps.leftServo.setPosition(OdometryServosImpl.leftServoLowerPosition);
         Thread.sleep(500);
-        podServos.leftServo.setPosition(OdometryPodServos.leftServoRaisePosition);
+        ps.leftServo.setPosition(OdometryServosImpl.leftServoRaisePosition);
         Thread.sleep(500);
 
         telemetry.addData("Wiggling Right Servo", 'y');
         telemetry.update();
-        podServos.rightServo.setPosition(OdometryPodServos.rightServoLowerPosition);
+        ps.rightServo.setPosition(OdometryServosImpl.rightServoLowerPosition);
         Thread.sleep(500);
-        podServos.rightServo.setPosition(OdometryPodServos.rightServoRaisePosition);
+        ps.rightServo.setPosition(OdometryServosImpl.rightServoRaisePosition);
         Thread.sleep(500);
 
         telemetry.addData("Wiggling Horizontal Servo", 'y');
         telemetry.update();
-        podServos.horizontalServo.setPosition(OdometryPodServos.horizontalServoLowerPosition);
+        ps.horizontalServo.setPosition(OdometryServosImpl.horizontalServoLowerPosition);
         Thread.sleep(500);
-        podServos.horizontalServo.setPosition(OdometryPodServos.horizontalServoRaisePosition);
+        ps.horizontalServo.setPosition(OdometryServosImpl.horizontalServoRaisePosition);
         Thread.sleep(500);
 
         while (opModeIsActive() && !isStopRequested()) {

@@ -43,7 +43,7 @@ public class SpaceBar implements TouchSensor {
 
     @Override
     public int getVersion() {
-        return 0;
+        return (sensor1.getVersion() + sensor2.getVersion())/2;
     }
 
     @Override

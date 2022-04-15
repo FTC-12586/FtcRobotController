@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 /**
  * A class to raise and lower the Odometry servos
  */
-public class OdometryPodServos {
+public class OdometryServosImpl implements OdometryServos {
 
     /**
      * The position the right servo must go to to be up
@@ -59,7 +59,7 @@ public class OdometryPodServos {
      * @param leftServoName       left servo name
      * @param horizontalServoName horizontal servo name
      */
-    public OdometryPodServos(HardwareMap hardwareMap, String rightServoName, String leftServoName, String horizontalServoName) {
+    public OdometryServosImpl(HardwareMap hardwareMap, String rightServoName, String leftServoName, String horizontalServoName) {
         this.horizontalServo = hardwareMap.servo.get(horizontalServoName);
         this.rightServo = hardwareMap.servo.get(rightServoName);
         this.leftServo = hardwareMap.servo.get(leftServoName);
