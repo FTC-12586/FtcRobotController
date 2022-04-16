@@ -127,8 +127,13 @@ public class CarouselSpinnerImpl implements CarouselSpinner {
      */
     @Override
     public Void gamepadControl(@NonNull Gamepad gamepad1, @NonNull Gamepad gamepad2) {
-        this.setServoPower(gamepad1.left_trigger - gamepad1.right_trigger);
-
+        if (gamepad2.x){
+            this.setServoPower(servoPower);
+        }else if(gamepad2.b){
+            this.setServoPower(-servoPower);
+        }else {
+            this.halt();
+        }
         return null;
     }
 }

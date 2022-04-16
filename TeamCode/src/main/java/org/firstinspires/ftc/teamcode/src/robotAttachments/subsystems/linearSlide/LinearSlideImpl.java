@@ -27,6 +27,8 @@ public class LinearSlideImpl implements LinearSlide {
     private boolean dPadUpDepressed = true;
     private boolean dPadDownDepressed = true;
 
+    private boolean autoMode;
+
     /**
      * A constructor for the linear slide
      *
@@ -41,6 +43,7 @@ public class LinearSlideImpl implements LinearSlide {
         linearSlide.setTargetPosition(HeightLevel.getEncoderCountFromEnum(HeightLevel.Down));
         linearSlide.setPower(1);
         linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        autoMode = true;
     }
 
     /**
@@ -119,6 +122,7 @@ public class LinearSlideImpl implements LinearSlide {
         linearSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         linearSlide.setPower(0);
         linearSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        autoMode = false;
     }
 
     /**
@@ -128,6 +132,7 @@ public class LinearSlideImpl implements LinearSlide {
         linearSlide.setTargetPosition(linearSlide.getCurrentPosition());
         linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         linearSlide.setPower(1);
+        autoMode = true;
     }
 
     /**
@@ -170,57 +175,61 @@ public class LinearSlideImpl implements LinearSlide {
      */
     @Override
     public Void gamepadControl(@NonNull Gamepad gamepad1, @NonNull Gamepad gamepad2) {
-        if (!resetSlide) {
-            if (Math.abs(gamepad2.left_stick_y) > 0.1) {
-                manualSlideControl = true;
-                int pos = (int) (Math.abs(this.getEncoderCount()) + (100 * -gamepad2.left_stick_y));
-                if (pos < -100) pos = -100;
-                if (pos > HeightLevel.getEncoderCountFromEnum(HeightLevel.TopLevel))
-                    pos = HeightLevel.getEncoderCountFromEnum(HeightLevel.TopLevel);
-                this.setTargetPosition(pos);
-            }
-
-
-            if (!gamepad2.dpad_up) {
-                dPadUpDepressed = true;
-            }
-
-            if (gamepad2.dpad_up && dPadUpDepressed) {
-                if (manualSlideControl) {
-                    manualSlideControl = false;
-                    currentLevel = HeightLevel.getClosestLevel(this.getEncoderCount());
+        if (autoMode) {
+            if (!resetSlide) {
+                if (Math.abs(gamepad2.left_stick_y) > 0.1) {
+                    manualSlideControl = true;
+                    int pos = (int) (Math.abs(this.getEncoderCount()) + (100 * -gamepad2.left_stick_y));
+                    if (pos < -100) pos = -100;
+                    if (pos > HeightLevel.getEncoderCountFromEnum(HeightLevel.TopLevel))
+                        pos = HeightLevel.getEncoderCountFromEnum(HeightLevel.TopLevel);
+                    this.setTargetPosition(pos);
                 }
-                dPadUpDepressed = false;
-                currentLevel = currentLevel.add(1);
-                this.setTargetLevel(currentLevel);
 
-            }
 
-            if (!gamepad2.dpad_down) {
-                dPadDownDepressed = true;
-            }
-
-            if (gamepad2.dpad_down && dPadDownDepressed) {
-                if (manualSlideControl) {
-                    manualSlideControl = false;
-                    currentLevel = HeightLevel.getClosestLevel(this.getEncoderCount());
+                if (!gamepad2.dpad_up) {
+                    dPadUpDepressed = true;
                 }
-                dPadDownDepressed = false;
-                currentLevel = currentLevel.subtract(1);
-                this.setTargetLevel(currentLevel);
-            }
 
-            if (gamepad2.right_bumper && gamepad2.left_bumper) {
-                this.teleopMode();
-                slideResetTimer.reset();
-                resetSlide = true;
+                if (gamepad2.dpad_up && dPadUpDepressed) {
+                    if (manualSlideControl) {
+                        manualSlideControl = false;
+                        currentLevel = HeightLevel.getClosestLevel(this.getEncoderCount());
+                    }
+                    dPadUpDepressed = false;
+                    currentLevel = currentLevel.add(1);
+                    this.setTargetLevel(currentLevel);
+
+                }
+
+                if (!gamepad2.dpad_down) {
+                    dPadDownDepressed = true;
+                }
+
+                if (gamepad2.dpad_down && dPadDownDepressed) {
+                    if (manualSlideControl) {
+                        manualSlideControl = false;
+                        currentLevel = HeightLevel.getClosestLevel(this.getEncoderCount());
+                    }
+                    dPadDownDepressed = false;
+                    currentLevel = currentLevel.subtract(1);
+                    this.setTargetLevel(currentLevel);
+                }
+
+                if (gamepad2.right_bumper && gamepad2.left_bumper) {
+                    this.teleopMode();
+                    slideResetTimer.reset();
+                    resetSlide = true;
+                }
+            } else if (slideResetTimer.seconds() > 0.5 && slideResetTimer.seconds() < 0.6) {
+                this.setMotorPower(0.3);
+            } else if (slideResetTimer.seconds() > 1 && resetSlide) {
+                resetSlide = false;
+                this.autoMode();
+                this.resetEncoder();
             }
-        } else if (slideResetTimer.seconds() > 0.5 && slideResetTimer.seconds() < 0.6) {
-            this.setMotorPower(0.3);
-        } else if (slideResetTimer.seconds() > 1 && resetSlide) {
-            resetSlide = false;
-            this.autoMode();
-            this.resetEncoder();
+        }else {
+            this.setMotorPower(-gamepad2.left_stick_y);
         }
 
 
@@ -228,6 +237,9 @@ public class LinearSlideImpl implements LinearSlide {
     }
 
     public void halt() {
+        if (!autoMode) {
+            this.setMotorPower(0);
+        }
 
     }
 }
