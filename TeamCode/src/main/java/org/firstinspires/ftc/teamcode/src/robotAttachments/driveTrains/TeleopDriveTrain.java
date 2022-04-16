@@ -97,14 +97,13 @@ public class TeleopDriveTrain extends BasicDrivetrain {
 
 
         //Speed Modifiers
-        if (gamepad1.b) {
-            this.setDrivePowerMultiplier(0.6);
-        }
         if (gamepad1.y) {
             this.setDrivePowerMultiplier(1);
 
-        }
-        if (gamepad1.a) {
+        } else if (gamepad1.b) {
+            this.setDrivePowerMultiplier(0.6);
+
+        } else if (gamepad1.a) {
             this.setDrivePowerMultiplier(0.3);
         }
         return null;
