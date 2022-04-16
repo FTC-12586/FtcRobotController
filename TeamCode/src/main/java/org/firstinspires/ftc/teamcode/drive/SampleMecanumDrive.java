@@ -373,6 +373,7 @@ public class SampleMecanumDrive extends MecanumDrive implements LocalizationAlgo
         this.leftRear.setPower(0);
     }
 
+
     public void strafeAtAngleWhileTurn(double angle, double desiredHeading, double power) {
 
         power = MiscUtils.boundNumber(power);
@@ -413,6 +414,10 @@ public class SampleMecanumDrive extends MecanumDrive implements LocalizationAlgo
     public void strafeAtAngleWhileTurn(double angle, double desiredHeading, double power, DistanceTimeoutException e, Telemetry telemetry, Executable<Boolean> _isStopRequested, Executable<Boolean> _opModeIsActive) throws MovementException {
         strafeAtAngleWhileTurn(angle, desiredHeading, power);
         e.call(this.getX(), this.getY(), this.getRot(), 1, telemetry, this, _isStopRequested, _opModeIsActive, batteryVoltageSensor);
+    }
+
+    public void goForward(double power) {
+        setMotorPowers(power, power, power, power);
     }
 
 

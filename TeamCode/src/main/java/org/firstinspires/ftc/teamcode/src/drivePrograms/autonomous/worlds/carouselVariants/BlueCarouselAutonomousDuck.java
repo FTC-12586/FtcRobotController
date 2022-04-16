@@ -30,8 +30,8 @@ public class BlueCarouselAutonomousDuck extends WorldsAutonomousProgram {
 
     public static TrajectorySequence PickingUpDuck(SampleMecanumDrive drive, Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
-                .setConstraints((v, pose2d, pose2d1, pose2d2) -> 10,
-                        (v, pose2d, pose2d1, pose2d2) -> 10)
+                .setConstraints((v, pose2d, pose2d1, pose2d2) -> 5,
+                        (v, pose2d, pose2d1, pose2d2) -> 5)
                 .lineTo(startPos.vec().minus(new Vector2d(0, 2)))
                 .setReversed(true)
                 .splineToLinearHeading(carouselSpinPos.plus(new Pose2d(14, 9, Math.toRadians(0))), Math.toRadians(90))
@@ -81,6 +81,8 @@ public class BlueCarouselAutonomousDuck extends WorldsAutonomousProgram {
 
 
         if (!isStopRequested()) {
+            spinner.spinOffBlueDuck();
+            checkStop();
             intake.setMotorPower(1);
             checkStop();
             drive.followTrajectorySequence(pickingUpDuck);
