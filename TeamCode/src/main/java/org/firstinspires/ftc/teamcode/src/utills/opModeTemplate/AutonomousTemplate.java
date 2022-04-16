@@ -19,8 +19,10 @@ public abstract class AutonomousTemplate extends GenericOpModeTemplate {
      *
      * @throws InterruptedException Throws if the OpMode is stopped during function execution
      */
-    protected void initAll() throws InterruptedException {
+    public void initAll() throws InterruptedException {
         drive = new SampleMecanumDrive(hardwareMap);
+        this.initOdometryServos();
+        podServos.raise();
         super.initAll();
         podServos.lower();
         slide.setTargetLevel(HeightLevel.Down);

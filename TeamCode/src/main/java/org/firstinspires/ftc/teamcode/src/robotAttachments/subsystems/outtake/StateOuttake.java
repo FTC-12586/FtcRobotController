@@ -137,7 +137,11 @@ public class StateOuttake implements Outtake {
 
     @Override
     public boolean itemInBucket() {
-        return false;
+        switch (this.identifyContents()) {
+            case EMPTY:
+                return false;
+        }
+        return true;
     }
 
 

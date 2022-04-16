@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.src.robotAttachments.navigation.navigationExceptions;
 
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.src.robotAttachments.navigation.LocalizationAlgorithm;
-import org.firstinspires.ftc.teamcode.src.robotAttachments.sensors.RobotVoltageSensor;
 import org.firstinspires.ftc.teamcode.src.utills.Executable;
 import org.firstinspires.ftc.teamcode.src.utills.MiscUtils;
 
@@ -48,7 +48,7 @@ public class DistanceTimeoutException extends MovementException {
      * {@inheritDoc}
      */
     @Override
-    public void call(double x, double y, double theta, double tolerance, Telemetry telemetry, LocalizationAlgorithm gps, Executable<Boolean> _isStopRequested, Executable<Boolean> _opModeIsActive, RobotVoltageSensor voltageSensor) throws MovementException {
+    public void call(double x, double y, double theta, double tolerance, Telemetry telemetry, LocalizationAlgorithm gps, Executable<Boolean> _isStopRequested, Executable<Boolean> _opModeIsActive, VoltageSensor voltageSensor) throws MovementException {
         if (timer.milliseconds() >= millis) {
             //These are arrays to make the compiler happy. Treat them as a normal double
             double positionBeforeTimeLoop = positionAfterTimeLoop;

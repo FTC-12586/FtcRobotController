@@ -5,7 +5,6 @@ import static com.qualcomm.hardware.rev.RevBlinkinLedDriver.BlinkinPattern;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.src.robotAttachments.driveTrains.TeleopDriveTrain;
-import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.intake.ContinuousIntake;
 
 
 /**
@@ -22,7 +21,6 @@ public abstract class TeleOpTemplate extends GenericOpModeTemplate {
     /**
      * Allows the control of the intake
      */
-    protected ContinuousIntake intake;
 
     public static final BlinkinPattern SpaceBarBlinkColor = BlinkinPattern.BLACK;
 
@@ -32,7 +30,7 @@ public abstract class TeleOpTemplate extends GenericOpModeTemplate {
      */
     protected void initAll() throws InterruptedException {
         initDriveTrain();
-        initIntake();
+
         initOuttake();
 
         super.initAll();
@@ -50,9 +48,6 @@ public abstract class TeleOpTemplate extends GenericOpModeTemplate {
         driveTrain = new TeleopDriveTrain(hardwareMap, frontRightName, frontLeftName, backRightName, backLeftName, true);
     }
 
-    public void initIntake() {
-        this.intake = new ContinuousIntake(hardwareMap, frontIntakeMotorName, backIntakeMotorName);
-    }
 
 
     /**

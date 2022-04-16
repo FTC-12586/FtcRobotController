@@ -27,7 +27,7 @@ public class IntakeColorSensorException extends MovementException {
         this.outtake = outtake;
     }
 
-    @Override
+
     public void call(double x, double y, double theta, double tolerance, Telemetry telemetry, LocalizationAlgorithm gps, Executable<Boolean> _isStopRequested, Executable<Boolean> _opModeIsActive, RobotVoltageSensor voltageSensor) throws MovementException {
         if (outtake.identifyContents() != FreightFrenzyGameObject.EMPTY) {
             throw this;

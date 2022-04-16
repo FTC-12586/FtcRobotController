@@ -41,7 +41,6 @@ public class DistanceSensorException extends MovementException {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void call(double x, double y, double theta, double tolerance, Telemetry telemetry, LocalizationAlgorithm gps, Executable<Boolean> _isStopRequested, Executable<Boolean> _opModeIsActive, RobotVoltageSensor voltageSensor) throws MovementException {
         if (this.distanceSensor.getDistance(DistanceUnit.CM) < threshold) {
             final String args = "moveToPosition(" + x + ", " + y + ", " + theta + ", " + tolerance + ")\n";

@@ -26,7 +26,12 @@ public abstract class WorldsAutonomousProgram extends AutoObjDetectionTemplateCV
         leds.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
         BarcodePositions pos;
         do {
-            pos = this.findPositionOfMarker();
+            try {
+                pos = this.findPositionOfMarker();
+            } catch (NullPointerException e) {
+                pos = BarcodePositions.NotSeen;
+                break;
+            }
             telemetry.addData("Pos", pos);
             telemetry.update();
 

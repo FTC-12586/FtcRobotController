@@ -15,6 +15,8 @@ import org.firstinspires.ftc.teamcode.src.robotAttachments.sensors.RobotVoltageS
 import org.firstinspires.ftc.teamcode.src.robotAttachments.sensors.SpaceBar;
 import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.carouselspinner.CarouselSpinner;
 import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.carouselspinner.CarouselSpinnerImpl;
+import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.intake.ContinuousIntake;
+import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.intake.Intake;
 import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.linearSlide.LinearSlide;
 import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.linearSlide.LinearSlideImpl;
 import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.outtake.Outtake;
@@ -163,6 +165,8 @@ public abstract class GenericOpModeTemplate extends LinearOpMode {
      */
     protected TapeMeasureTurret turret;
 
+    protected Intake intake;
+
     /**
      * Provides methods for using the outtake
      */
@@ -226,11 +230,16 @@ public abstract class GenericOpModeTemplate extends LinearOpMode {
         initSpinner();
         initDistanceSensors();
         initTapeMeasureTurret();
+        initIntake();
         initOuttake();
         initSpaceBar();
         if (voltageSensor.getVoltage() < 12.5) {
             RobotLog.addGlobalWarningMessage("Voltage reported by internal sensor less than 12.5V");
         }
+    }
+
+    public void initIntake() {
+        this.intake = new ContinuousIntake(hardwareMap, frontIntakeMotorName, backIntakeMotorName);
     }
 
     /**

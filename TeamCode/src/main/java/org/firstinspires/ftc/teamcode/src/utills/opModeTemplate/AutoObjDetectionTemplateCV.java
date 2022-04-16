@@ -288,11 +288,20 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
 
     }
 
+    protected void closeWebcam() {
+
+        if (webcam != null) {
+            webcam.closeCameraDeviceAsync(() -> RobotLog.dd("Webcam Image Processor", "Closed"));
+            webcam = null;
+        }
+    }
+
     @Override
     protected void cleanup() {
         super.cleanup();
-        //webcam.closeCameraDevice();
-        webcam.closeCameraDeviceAsync(() -> RobotLog.dd("Webcam Image Processor", "Closed"));
+        if (webcam != null) {
+            webcam.closeCameraDeviceAsync(() -> RobotLog.dd("Webcam Image Processor", "Closed"));
+        }
     }
 
 }

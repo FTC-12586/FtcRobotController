@@ -40,6 +40,12 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.src.robotAttachments.navigation.LocalizationAlgorithm;
+import org.firstinspires.ftc.teamcode.src.robotAttachments.navigation.navigationExceptions.DistanceTimeoutException;
+import org.firstinspires.ftc.teamcode.src.robotAttachments.navigation.navigationExceptions.MovementException;
+import org.firstinspires.ftc.teamcode.src.robotAttachments.navigation.odometry.enums.FieldPoints;
+import org.firstinspires.ftc.teamcode.src.utills.Executable;
 import org.firstinspires.ftc.teamcode.src.utills.MiscUtils;
 import org.firstinspires.ftc.teamcode.src.utills.opModeTemplate.GenericOpModeTemplate;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -57,7 +63,7 @@ import java.util.List;
  * Simple mecanum drive hardware implementation for REV hardware.
  */
 @Config
-public class SampleMecanumDrive extends MecanumDrive {
+public class SampleMecanumDrive extends MecanumDrive implements LocalizationAlgorithm {
     private static final TrajectoryVelocityConstraint VEL_CONSTRAINT = getVelocityConstraint(MAX_VEL, MAX_ANG_VEL, TRACK_WIDTH);
     private static final TrajectoryAccelerationConstraint ACCEL_CONSTRAINT = getAccelerationConstraint(MAX_ACCEL);
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(8, 0, 0);
@@ -401,6 +407,12 @@ public class SampleMecanumDrive extends MecanumDrive {
         leftFront.setPower(power2 + power4);
         rightRear.setPower(power2 + power3);
 
+
+    }
+
+    public void strafeAtAngleWhileTurn(double angle, double desiredHeading, double power, DistanceTimeoutException e, Telemetry telemetry, Executable<Boolean> _isStopRequested, Executable<Boolean> _opModeIsActive) throws MovementException {
+        strafeAtAngleWhileTurn(angle, desiredHeading, power);
+        e.call(this.getX(), this.getY(), this.getRot(), 1, telemetry, this, _isStopRequested, _opModeIsActive, batteryVoltageSensor);
     }
 
 
@@ -412,5 +424,35 @@ public class SampleMecanumDrive extends MecanumDrive {
         //
         // See https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/251 for details.
         return (double) -imu.getAngularVelocity().xRotationRate;
+    }
+
+    @Override
+    public double[] getPos() {
+        Pose2d cashe = this.getPoseEstimate();
+        double[] tmp = {cashe.getX(), cashe.getY(), cashe.getHeading()};
+        return tmp;
+    }
+
+    @Override
+    public void setPos(FieldPoints initPos) throws InterruptedException {
+    }
+
+    @Override
+    public double getX() {
+        return getPoseEstimate().getX();
+    }
+
+    @Override
+    public double getY() {
+        return getPoseEstimate().getY();
+    }
+
+    @Override
+    public double getRot() {
+        return getPoseEstimate().getHeading();
+    }
+
+    @Override
+    public void setPos(double X, double Y, double rot) throws InterruptedException {
     }
 }

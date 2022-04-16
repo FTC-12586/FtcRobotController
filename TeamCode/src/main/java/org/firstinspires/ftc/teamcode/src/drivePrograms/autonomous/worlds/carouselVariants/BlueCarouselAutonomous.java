@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.worlds.WorldsAutonomousProgram;
 import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.linearSlide.HeightLevel;
 import org.firstinspires.ftc.teamcode.src.utills.enums.BarcodePositions;
+import org.firstinspires.ftc.teamcode.src.utills.opModeTemplate.AutonomousTemplate;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Config
@@ -29,11 +30,11 @@ public class BlueCarouselAutonomous extends WorldsAutonomousProgram {
     public static Trajectory ToGoalTraj(SampleMecanumDrive drive, Pose2d startPos) {
         return drive.trajectoryBuilder(startPos)
                 // Side in
-                .lineToConstantHeading(parkPos.plus(new Pose2d(20, 15, 0)).vec())
+                .lineToConstantHeading(parkPos.plus(new Pose2d(18, 15, 0)).vec())
                 // Cross Box
-                .splineToConstantHeading(parkPos.plus(new Pose2d(25, -15, 0)).vec(), 0)
+                .splineToConstantHeading(parkPos.plus(new Pose2d(15, -15, 0)).vec(), 0)
                 //Approach Goal
-                .splineToSplineHeading(dropOffPos.plus(new Pose2d(8, 4, Math.toRadians(18))), 0)
+                .splineToSplineHeading(dropOffPos.plus(new Pose2d(8, 4, Math.toRadians(20))), 0)
                 .build();
     }
 
@@ -51,13 +52,13 @@ public class BlueCarouselAutonomous extends WorldsAutonomousProgram {
     public static Trajectory ToEnd(SampleMecanumDrive drive, Pose2d startPos) {
         return drive.trajectoryBuilder(startPos)
                 //Park
-                .lineTo(parkPos.vec().plus(new Vector2d(8, -1)))
+                .lineTo(parkPos.vec().plus(new Vector2d(5, -1)))
                 .build();
     }
 
     @Override
     public void opModeMain() throws InterruptedException {
-        initAll();
+        ((AutonomousTemplate) this).initAll();
 
         leds.setPattern(defaultColor);
 
