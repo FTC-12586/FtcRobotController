@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
-import com.qualcomm.robotcore.hardware.ColorRangeSensor;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -26,7 +26,7 @@ public class StateOuttake implements Outtake {
     /**
      * The item color sensor
      */
-    private final ColorRangeSensor colorSensor;
+    private final ColorSensor colorSensor;
     /**
      * The internal Servo Object
      */
@@ -36,7 +36,7 @@ public class StateOuttake implements Outtake {
     private boolean isClosed;
 
     public StateOuttake(HardwareMap hardwareMap, String colorSensor, String servoName, boolean sensorDetectionLight) {
-        this.colorSensor = hardwareMap.get(ColorRangeSensor.class, colorSensor);
+        this.colorSensor = hardwareMap.get(ColorSensor.class, colorSensor);
         this.colorSensor.enableLed(sensorDetectionLight);
 
 

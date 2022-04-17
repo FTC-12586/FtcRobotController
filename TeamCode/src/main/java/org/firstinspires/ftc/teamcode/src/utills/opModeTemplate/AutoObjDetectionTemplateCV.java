@@ -138,7 +138,7 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
      *
      * @throws InterruptedException Throws if OpMode is stopped during execution
      */
-    public void initAll() throws InterruptedException {
+    public void initAll(String DefaultCameraName) throws InterruptedException {
         this.initOpenCV();
         super.initAll();
     }

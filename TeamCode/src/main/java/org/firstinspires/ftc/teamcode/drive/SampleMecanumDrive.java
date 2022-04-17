@@ -416,8 +416,24 @@ public class SampleMecanumDrive extends MecanumDrive implements LocalizationAlgo
         e.call(this.getX(), this.getY(), this.getRot(), 1, telemetry, this, _isStopRequested, _opModeIsActive, batteryVoltageSensor);
     }
 
-    public void goForward(double power) {
+    public void goForwardSimple(double power) {
         setMotorPowers(power, power, power, power);
+    }
+
+    public void goRightSimple(double power) {
+        setMotorPowers(power, -power, power, -power);
+    }
+
+    public void goLeftSimple(double power) {
+        goRightSimple(-power);
+    }
+
+    public void goBackwardsSimple(double power) {
+        goForwardSimple(-power);
+    }
+
+    public void turnSimple(double power) {
+        setMotorPowers(-power, -power, power, power);
     }
 
 
