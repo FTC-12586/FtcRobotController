@@ -22,6 +22,7 @@
 package org.firstinspires.ftc.teamcode.src.utills.ouropencv;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -39,6 +40,7 @@ import org.openftc.easyopencv.OpenCvSwitchableWebcam;
 
 import java.util.Locale;
 
+@Disabled
 @TeleOp(name = "SwitchableWebcamExample")
 public class SwitchableWebcamExample extends LinearOpMode {
     WebcamName webcam1;

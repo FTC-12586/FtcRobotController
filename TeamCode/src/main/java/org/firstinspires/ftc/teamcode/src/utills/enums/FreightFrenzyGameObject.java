@@ -17,27 +17,27 @@ public enum FreightFrenzyGameObject {
     /**
      * RGB values of a ball
      */
-    private static final double[] BallRGB = new double[]{303, 538, 454};
+    private static final double[] BallRGB = new double[]{701, 1235, 1063};
 
     /**
      * RGB values of a smooth cube side
      */
-    private static final double[] CubeSmoothRGB = new double[]{151, 203, 83};
+    private static final double[] CubeSmoothRGB = new double[]{180, 239, 96};
 
     /**
      * RGB values of a waffle cube side
      */
-    private static final double[] CubeWaffleRGB = new double[]{110, 114, 68};
+    private static final double[] CubeWaffleRGB = new double[]{138, 178, 83};
 
     /**
      * RGB values of a duck
      */
-    private static final double[] DuckRGB = new double[]{54, 91, 54};
+    private static final double[] DuckRGB = new double[]{70, 130, 68};
 
     /**
      * RGB values of a empty outtake
      */
-    private static final double[] EmptyRGB = new double[]{32, 56, 48};
+    private static final double[] EmptyRGB = new double[]{36, 63, 54};
 
 
     /**

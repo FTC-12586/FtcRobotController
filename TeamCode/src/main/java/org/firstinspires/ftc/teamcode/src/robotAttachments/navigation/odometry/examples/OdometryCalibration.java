@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.src.robotAttachments.navigation.odometry.
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -20,7 +21,7 @@ import java.io.File;
  * @author Sarthak
  * @since 6/1/2019
  */
-//@Disabled
+@Disabled
 @TeleOp(name = "Odometry System Calibration", group = "Calibration")
 public class OdometryCalibration extends GenericOpModeTemplate {
 

@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.linearSlid
 import org.firstinspires.ftc.teamcode.src.utills.enums.BarcodePositions;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
+@Disabled
 @Config
 @Autonomous(name = "🟦Blue Warehouse Autonomous Freight🟦", group = "BlueWarehouse")
 public class BlueWarehouseAutonomousFreight extends WorldsAutonomousProgram {

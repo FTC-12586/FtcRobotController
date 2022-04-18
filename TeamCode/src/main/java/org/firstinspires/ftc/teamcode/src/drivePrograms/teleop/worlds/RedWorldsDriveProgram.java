@@ -16,6 +16,8 @@ public class RedWorldsDriveProgram extends TeleOpTemplate {
     private boolean x_depressed = true;
     private boolean tapeMeasureCtrl = false;
 
+    private boolean spaceBarDepressed = true;
+
     public RedWorldsDriveProgram() {
         defaultColor = BlinkinPattern.RED;
         currentPattern = this.defaultColor;
@@ -26,8 +28,6 @@ public class RedWorldsDriveProgram extends TeleOpTemplate {
         this.initAll();
 
         leds.setPattern(currentPattern);
-
-        slide.autoMode();
 
         telemetry.addData("Initialization", "finished");
         telemetry.update();
@@ -50,6 +50,7 @@ public class RedWorldsDriveProgram extends TeleOpTemplate {
                 }
 
                 if (gamepad1.x && x_depressed) {
+                    x_depressed = false;
                     tapeMeasureCtrl = !tapeMeasureCtrl;
                     driveTrain.halt();
                     turret.halt();
@@ -72,23 +73,31 @@ public class RedWorldsDriveProgram extends TeleOpTemplate {
                 BlinkinPattern proposedPattern = FreightFrenzyGameObject.getLEDColorFromItem(outtake.gamepadControl(gamepad1, gamepad2));
 
                 // Check SPace Bar, if pressed, reset space bar timer
-                if (spaceBar.isPressed()) {
+                if (spaceBar.isPressed() && spaceBarDepressed) {
                     SpaceBarColorTimer.reset();
+                    spaceBarDepressed = false;
+                }
+                if (!spaceBar.isPressed()) {
+                    spaceBarDepressed = true;
                 }
 
                 intake.gamepadControl(gamepad1, gamepad2);
 
                 //If space bar timer is less than 1, turn LEDS off
                 //This overrides the intakes' proposed pattern
-                if (SpaceBarColorTimer.seconds() < 1) {
+                if (SpaceBarColorTimer.seconds() < 1 && SpaceBarColorTimer.seconds() > .25) {
                     intake.setFrontMotorPower(0);
                     proposedPattern = BlinkinPattern.BLACK;
                 }
 
-                if (proposedPattern != null) {
-                    leds.setPattern(proposedPattern);
+                if (proposedPattern != null && proposedPattern != currentPattern) {
+                    currentPattern = proposedPattern;
+                    leds.setPattern(currentPattern);
                 } else {
-                    leds.setPattern(this.defaultColor);
+                    if (currentPattern != defaultColor) {
+                        currentPattern = defaultColor;
+                        leds.setPattern(this.defaultColor);
+                    }
                 }
 
             }

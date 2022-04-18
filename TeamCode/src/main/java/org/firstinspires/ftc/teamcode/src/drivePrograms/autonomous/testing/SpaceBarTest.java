@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.testing;
 
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.src.utills.opModeTemplate.GenericOpModeTemplate;
 import org.firstinspires.ftc.teamcode.src.utills.opModeTemplate.TeleOpTemplate;
 
+@Disabled
 @TeleOp(name = "SpaceBarTest")
 public class SpaceBarTest extends TeleOpTemplate {
     @Override

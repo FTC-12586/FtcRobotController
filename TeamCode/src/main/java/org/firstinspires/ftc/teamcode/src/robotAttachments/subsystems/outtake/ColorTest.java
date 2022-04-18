@@ -18,15 +18,11 @@ import org.firstinspires.ftc.teamcode.src.utills.opModeTemplate.TeleOpTemplate;
 public class ColorTest extends TeleOpTemplate {
     public void opModeMain() throws InterruptedException {
         this.initOuttake();
-        this.initIntake();
 
         // this instantiation assumes that the color sensor's name is color_sensor
         waitForStart();
 
         while (opModeIsActive() && !isStopRequested()) {
-
-            intake.gamepadControl(gamepad1, gamepad2);
-
             outtake.gamepadControl(gamepad1, gamepad2);
 
             telemetry.addData("red:", outtake.getColor(Red));

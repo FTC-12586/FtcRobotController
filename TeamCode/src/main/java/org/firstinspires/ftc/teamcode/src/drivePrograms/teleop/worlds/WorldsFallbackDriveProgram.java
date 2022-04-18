@@ -26,6 +26,7 @@ public class WorldsFallbackDriveProgram extends TeleOpTemplate {
 
             try {
                 this.initLinearSlide();
+                slide.teleopMode();
             } catch (RuntimeException e) {
                 RobotLog.addGlobalWarningMessage("Linear Slide failed to init");
                 RobotLog.ee("Linear Slide init failed", e, "Continuing OpMode");
@@ -147,7 +148,7 @@ public class WorldsFallbackDriveProgram extends TeleOpTemplate {
                 }
 
                 try {
-                    slide.gamepadControl(gamepad1, gamepad2);
+                    slide.setMotorPower(-gamepad2.left_stick_y);
                 } catch (RuntimeException e) {
                     RobotLog.e("Slide failed to be controlled");
                     try {

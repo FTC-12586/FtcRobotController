@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.src.utills.ouropencv;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -12,6 +13,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
+@Disabled
 @Autonomous(name = "OpenCV_Contour_12586_Test", group = "Tutorials")
 public class OpenCVTest extends LinearOpMode {
     public static final double borderLeftX = 0.0;   //fraction of pixels from the left side of the cam to skip

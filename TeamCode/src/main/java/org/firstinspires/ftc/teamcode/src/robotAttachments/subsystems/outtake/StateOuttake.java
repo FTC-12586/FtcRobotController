@@ -36,7 +36,7 @@ public class StateOuttake implements Outtake {
     private boolean isClosed;
 
     public StateOuttake(HardwareMap hardwareMap, String colorSensor, String servoName, boolean sensorDetectionLight) {
-        this.colorSensor = hardwareMap.get(ColorSensor.class, colorSensor);
+        this.colorSensor = hardwareMap.colorSensor.get(colorSensor);
         this.colorSensor.enableLed(sensorDetectionLight);
 
 
@@ -99,12 +99,23 @@ public class StateOuttake implements Outtake {
 
     @Override
     public void goTo(double pos) {
-
+        this.itemRelease.setPosition(pos);
     }
 
     @Override
     public int getColor(RGBCameraColors color) {
-        return 0;
+        switch (color) {
+            case Green:
+                return colorSensor.green();
+            case Blue:
+                return colorSensor.blue();
+
+            case Red:
+                return colorSensor.red();
+
+            default:
+                return 0;
+        }
     }
 
     /**
