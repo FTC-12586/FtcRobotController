@@ -18,6 +18,19 @@ public interface CarouselSpinner extends Controllable<Void> {
      */
     void spinOffBlueDuck() throws InterruptedException;
 
+    /**
+     * Spins off the red duck
+     *
+     * @throws InterruptedException raises exception if the OpMode is stopped
+     */
+    void spinOffRedDuckSlow() throws InterruptedException;
+
+    /**
+     * Spins off the blue duck
+     *
+     * @throws InterruptedException raises exception if the OpMode is stopped
+     */
+    void spinOffBlueDuckSlow() throws InterruptedException;
 
 
 }

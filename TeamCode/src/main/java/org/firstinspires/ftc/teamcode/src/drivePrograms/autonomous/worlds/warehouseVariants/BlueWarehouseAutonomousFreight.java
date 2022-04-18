@@ -53,8 +53,6 @@ public class BlueWarehouseAutonomousFreight extends WorldsAutonomousProgram {
     public void opModeMain() throws InterruptedException {
         this.initAll();
 
-        final SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-
         drive.setPoseEstimate(startPos);
 
         final TrajectorySequence startToHub = BlueWarehouseAutonomous.toHub(drive, startPos);
@@ -71,17 +69,16 @@ public class BlueWarehouseAutonomousFreight extends WorldsAutonomousProgram {
 
         waitForStart();
         if (!isStopRequested() && opModeIsActive()) {
-/*
+            drive.setPoseEstimate(startPos);
+
             drive.followTrajectorySequence(startToHub);
 
             this.dropOffItem(pos);
-            //slide.setTargetLevel(HeightLevel.Down);
+            slide.setTargetLevel(HeightLevel.Down);
 
             drive.followTrajectorySequence(toWHFreight);
-            //slide.setTargetLevel(HeightLevel.Down);
-            //slide.waitOn();
-
- */
+            slide.setTargetLevel(HeightLevel.Down);
+            slide.waitOn();
 
 
             blueAutoIntakeFreight(1000, intake, .3);
@@ -94,8 +91,9 @@ public class BlueWarehouseAutonomousFreight extends WorldsAutonomousProgram {
             // use distance sensor
 
 
-// the following could probably be put in a method in WorldsAutonomous
+            // the following could probably be put in a method in WorldsAutonomous
             //reposition using wall and distance sensor
+
             double xTarget = toWHFreight.end().getX();
             double xPos = (70 - (frontDistanceSensor.getDistance(DistanceUnit.INCH) + 7.25));
             double distanceToXPos = xTarget - xPos;

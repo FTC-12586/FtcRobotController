@@ -6,8 +6,6 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.src.utills.Controllable;
-
 public class TapeMeasureTurretImpl implements TapeMeasureTurret {
     private final CRServo tapeMeasure;
     private final CRServo pitch;

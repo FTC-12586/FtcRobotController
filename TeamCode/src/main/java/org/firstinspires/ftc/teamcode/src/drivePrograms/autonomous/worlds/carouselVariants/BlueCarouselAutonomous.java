@@ -11,8 +11,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.worlds.WorldsAutonomousProgram;
 import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.linearSlide.HeightLevel;
+import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.linearSlide.LinearSlide;
+import org.firstinspires.ftc.teamcode.src.utills.Executable;
 import org.firstinspires.ftc.teamcode.src.utills.enums.BarcodePositions;
-import org.firstinspires.ftc.teamcode.src.utills.opModeTemplate.AutonomousTemplate;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Config
@@ -23,58 +24,82 @@ public class BlueCarouselAutonomous extends WorldsAutonomousProgram {
     final static Pose2d carouselSpinPos = new Pose2d(-61, 51, Math.toRadians(90));
     final static Pose2d parkPos = new Pose2d(-60, 35.5, Math.toRadians(90));
 
+    BarcodePositions detectedPos;
+
     public BlueCarouselAutonomous() {
         super(BlinkinPattern.BLUE);
     }
 
-    public static Trajectory ToGoalTraj(SampleMecanumDrive drive, Pose2d startPos) {
+    public static Trajectory ToGoalTraj(SampleMecanumDrive drive, Pose2d startPos, LinearSlide slide, Executable<BarcodePositions> getPos) {
         return drive.trajectoryBuilder(startPos)
                 // Side in
                 .lineToConstantHeading(parkPos.plus(new Pose2d(18, 15, 0)).vec())
                 // Cross Box
-                .splineToConstantHeading(parkPos.plus(new Pose2d(15, -15, 0)).vec(), 0)
+                .splineToSplineHeading(new Pose2d(parkPos.getX() + 20, parkPos.getY() - 15, dropOffPos.getHeading()), Math.toRadians(0))
+                .addSpatialMarker(dropOffPos.vec(), () -> {
+                    switch (getPos.call()) {
+                        case Center:
+                            slide.setTargetLevel(HeightLevel.MiddleLevel);
+                            break;
+
+                        case Left:
+                            slide.setTargetLevel(HeightLevel.BottomLevel);
+                            break;
+
+                        default:
+                            slide.setTargetLevel(HeightLevel.TopLevel);
+                    }
+
+                })
+
                 //Approach Goal
-                .splineToSplineHeading(dropOffPos.plus(new Pose2d(8, 4, Math.toRadians(20))), 0)
+                .splineToSplineHeading(dropOffPos.plus(new Pose2d(12, 4, Math.toRadians(20))), Math.toRadians(0))
                 .build();
     }
 
-    public static TrajectorySequence ToSpinner(SampleMecanumDrive drive, Pose2d startPos) {
+    public static TrajectorySequence ToSpinner(SampleMecanumDrive drive, Pose2d startPos, LinearSlide slide) {
         return drive.trajectorySequenceBuilder(startPos)
-                // Cross Box
-                .lineToLinearHeading(new Pose2d(parkPos.getX() + 15, parkPos.getY() - 15, Math.toRadians(95)))
 
-                //.setConstraints((v, pose2d, pose2d1, pose2d2) -> 10, (v, pose2d, pose2d1, pose2d2) -> 20)
-                // To Carousel Spinner
-                .lineTo(carouselSpinPos.plus(new Pose2d(8, 4)).vec())
+                .addSpatialMarker(new Pose2d(parkPos.getX() + 20, parkPos.getY() - 15, Math.toRadians(95)).vec().plus(startPos.vec()).div(2), () -> slide.setTargetLevel(HeightLevel.Down))
+
+                //Back away from goal
+                // Cross Box
+                .lineToConstantHeading(new Pose2d(parkPos.getX() + 20, parkPos.getY() - 15, Math.toRadians(95)).vec())
+
+                // Cross Box to Carousel Spinner
+                .splineToSplineHeading(carouselSpinPos.plus(new Pose2d(10, -10, Math.toRadians(30))), Math.toRadians(90))
+                .splineToConstantHeading(carouselSpinPos.plus(new Pose2d(5, 3, Math.toRadians(30))).vec(), Math.toRadians(90))
                 .build();
     }
 
     public static Trajectory ToEnd(SampleMecanumDrive drive, Pose2d startPos) {
         return drive.trajectoryBuilder(startPos)
                 //Park
-                .lineTo(parkPos.vec().plus(new Vector2d(5, -1)))
+                .lineTo(parkPos.vec().plus(new Vector2d(10, -1)))
                 .build();
     }
 
     @Override
     public void opModeMain() throws InterruptedException {
-        ((AutonomousTemplate) this).initAll();
+        this.initAll();
 
         leds.setPattern(defaultColor);
 
         drive.setPoseEstimate(startPos);
 
-        // From
-        final Trajectory toGoal = BlueCarouselAutonomous.ToGoalTraj(drive, startPos);
+        final Executable<BarcodePositions> getPos = () -> detectedPos;
 
-        final TrajectorySequence toSpinner = BlueCarouselAutonomous.ToSpinner(drive, toGoal.end());
+        // From
+        final Trajectory toGoal = BlueCarouselAutonomous.ToGoalTraj(drive, startPos, slide, getPos);
+
+        final TrajectorySequence toSpinner = BlueCarouselAutonomous.ToSpinner(drive, toGoal.end(), slide);
 
         final Trajectory toPark = ToEnd(drive, toSpinner.end());
 
         telemetry.addData("Setup", "Finished");
         telemetry.update();
 
-        final BarcodePositions pos = monitorMarkerWhileWaitForStart();
+        detectedPos = monitorMarkerWhileWaitForStart();
 
 
         waitForStart();
@@ -84,7 +109,7 @@ public class BlueCarouselAutonomous extends WorldsAutonomousProgram {
             drive.followTrajectory(toGoal);
             drive.turnTo(dropOffPos.getHeading());
 
-            this.dropOffItem(pos);
+            this.dropOffItem(detectedPos);
 
             drive.followTrajectorySequence(toSpinner);
 

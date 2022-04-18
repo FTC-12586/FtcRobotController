@@ -6,8 +6,8 @@ public interface Intake extends Controllable<Void> {
 
     void setMotorPower(double power);
 
-     void setFrontMotorPower(double power);
+    void setFrontMotorPower(double power);
 
-     void setBackMotorPower(double power);
+    void setBackMotorPower(double power);
 
 }

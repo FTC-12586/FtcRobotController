@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.worlds.WorldsAutonomousProgram;
 import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.linearSlide.HeightLevel;
 import org.firstinspires.ftc.teamcode.src.utills.enums.BarcodePositions;
+import org.firstinspires.ftc.teamcode.src.utills.opModeTemplate.GenericOpModeTemplate;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Config
@@ -58,10 +59,8 @@ public class RedCarouselAutonomous extends WorldsAutonomousProgram {
 
     @Override
     public void opModeMain() throws InterruptedException {
-        this.initAll();
+        this.initAll(GenericOpModeTemplate.LeftWebcamName);
         RobotLog.v("Completed initialization");
-        this.switchWebcam();
-        RobotLog.v("Switched Cameras");
 
         final SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 

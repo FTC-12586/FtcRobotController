@@ -9,8 +9,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
 
-import org.firstinspires.ftc.teamcode.src.utills.Controllable;
-
 /**
  * A class to control linear slides using the builtin motor control methods
  */
@@ -26,6 +24,8 @@ public class LinearSlideImpl implements LinearSlide {
     private HeightLevel currentLevel = HeightLevel.Down;
     private boolean dPadUpDepressed = true;
     private boolean dPadDownDepressed = true;
+
+    private static final short slideTimeoutTime = 4; //In Seconds
 
     private boolean autoMode;
 
@@ -66,14 +66,14 @@ public class LinearSlideImpl implements LinearSlide {
 
     public void waitOn() throws InterruptedException {
         ElapsedTime slideStuckTimer = new ElapsedTime();
-        while (!this.isAtPosition()) {
-            if (slideStuckTimer.seconds() > 8) {
+        do {
+            Thread.sleep(40);
+            if (slideStuckTimer.seconds() > slideTimeoutTime) {
                 RobotLog.addGlobalWarningMessage("Slide Was Stuck. Dropping on lowest level");
                 this.setTargetLevel(HeightLevel.BottomLevel);
                 break;
             }
-            Thread.sleep(40);
-        }
+        } while (!this.isAtPosition(15));
     }
 
     /**
@@ -228,7 +228,7 @@ public class LinearSlideImpl implements LinearSlide {
                 this.autoMode();
                 this.resetEncoder();
             }
-        }else {
+        } else {
             this.setMotorPower(-gamepad2.left_stick_y);
         }
 

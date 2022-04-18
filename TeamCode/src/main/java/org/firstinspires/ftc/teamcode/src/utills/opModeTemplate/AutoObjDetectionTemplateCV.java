@@ -34,10 +34,15 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
 
     private static final int CAMERA_OPEN_ERROR_FAILURE_TO_OPEN_CAMERA_DEVICE = -1;
     private static final int CAMERA_OPEN_ERROR_POSTMORTEM_OPMODE = -2;
-    private final ContourPipeline myPipeline = new ContourPipeline(borderLeftX, borderRightX, borderTopY, borderBottomY);
-    private WebcamName camName;
+    private final static ContourPipeline myPipeline = new ContourPipeline(borderLeftX, borderRightX, borderTopY, borderBottomY);
+
+    static {
+        myPipeline.configureScalarLower(scalarLowerYCrCb.val[0], scalarLowerYCrCb.val[1], scalarLowerYCrCb.val[2]);
+        myPipeline.configureScalarUpper(scalarUpperYCrCb.val[0], scalarUpperYCrCb.val[1], scalarUpperYCrCb.val[2]);
+    }
+
+
     private OpenCvWebcam webcam;
-    private boolean rightCameraOn;
 
     private final OpenCvCamera.AsyncCameraOpenListener defaultListener = new OpenCvCamera.AsyncCameraOpenListener() {
         @Override
@@ -139,56 +144,18 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
      * @throws InterruptedException Throws if OpMode is stopped during execution
      */
     public void initAll(String DefaultCameraName) throws InterruptedException {
-        this.initOpenCV();
+        this.initOpenCV(DefaultCameraName);
         super.initAll();
     }
 
-    public void switchWebcam() {
-        if (rightCameraOn) {
-            webcam.closeCameraDevice();
-            webcam.closeCameraDeviceAsync(() -> {
-            });
-
-            camName = hardwareMap.get(WebcamName.class, GenericOpModeTemplate.LeftWebcamName);
-
-            int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-
-            /*
-              Here we use a special factory method that accepts multiple WebcamName arguments. It returns an
-              {@link OpenCvSwitchableWebcam} which contains a couple extra methods over simply an {@link OpenCvCamera}.
-             */
-            webcam = OpenCvCameraFactory.getInstance().createWebcam(camName, cameraMonitorViewId);
-
-            webcam.setPipeline(myPipeline);
-
-            // Webcam Streaming
-            webcam.openCameraDeviceAsync(defaultListener);
-
-
-            rightCameraOn = false;
-        } else {
-            webcam.closeCameraDevice();
-            webcam.closeCameraDeviceAsync(() -> {
-            });
-
-            camName = hardwareMap.get(WebcamName.class, GenericOpModeTemplate.RightWebcamName);
-
-            int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-
-            /*
-              Here we use a special factory method that accepts multiple WebcamName arguments. It returns an
-              {@link OpenCvSwitchableWebcam} which contains a couple extra methods over simply an {@link OpenCvCamera}.
-             */
-            webcam = OpenCvCameraFactory.getInstance().createWebcam(camName, cameraMonitorViewId);
-
-            webcam.setPipeline(myPipeline);
-
-            webcam.openCameraDeviceAsync(defaultListener);
-
-
-            rightCameraOn = true;
-        }
-
+    /**
+     * Initializes all fields provided by this class
+     *
+     * @throws InterruptedException Throws if OpMode is stopped during execution
+     */
+    public void initAll() throws InterruptedException {
+        this.initOpenCV(GenericOpModeTemplate.RightWebcamName);
+        super.initAll();
     }
 
     /**
@@ -244,47 +211,36 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
     /**
      * Uses the camera to determine where the object is on screen
      *
-     * @return Where the marker is
+     * @return Where the marker is or not seen if camera is not initialized
      */
     public BarcodePositions findPositionOfMarker() {
-        if (myPipeline.getRectArea() > 2000) {
-            if (myPipeline.getRectMidpointX() > 400) {
-                return BarcodePositions.Right;
-            } else if (myPipeline.getRectMidpointX() > 200) {
-                return BarcodePositions.Center;
-            } else {
-                return BarcodePositions.Left;
+        if (webcam != null) {
+            if (myPipeline.getRectArea() > 2000) {
+                if (myPipeline.getRectMidpointX() > 400) {
+                    return BarcodePositions.Right;
+                } else if (myPipeline.getRectMidpointX() > 200) {
+                    return BarcodePositions.Center;
+                } else {
+                    return BarcodePositions.Left;
+                }
             }
         }
         return BarcodePositions.NotSeen;
     }
 
-    public void initOpenCV() {
-        /*
-          NOTE: Many comments have been omitted from this sample for the
-          sake of conciseness. If you're just starting out with EasyOpenCv,
-          you should take a look at {@link InternalCamera1Example} or its
-          webcam counterpart, {@link WebcamExample} first.
-         */
+    public void initOpenCV(String CameraName) {
 
-        camName = hardwareMap.get(WebcamName.class, GenericOpModeTemplate.RightWebcamName);
+        WebcamName camName = hardwareMap.get(WebcamName.class, CameraName);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 
-        /*
-          Here we use a special factory method that accepts multiple WebcamName arguments. It returns an
-          {@link OpenCvSwitchableWebcam} which contains a couple extra methods over simply an {@link OpenCvCamera}.
-         */
         webcam = OpenCvCameraFactory.getInstance().createWebcam(camName, cameraMonitorViewId);
 
         webcam.setPipeline(myPipeline);
-        // Configuration of Pipeline
-        myPipeline.configureScalarLower(scalarLowerYCrCb.val[0], scalarLowerYCrCb.val[1], scalarLowerYCrCb.val[2]);
-        myPipeline.configureScalarUpper(scalarUpperYCrCb.val[0], scalarUpperYCrCb.val[1], scalarUpperYCrCb.val[2]);
+
         // Webcam Streaming
         webcam.openCameraDeviceAsync(defaultListener);
 
-        rightCameraOn = true;
 
     }
 

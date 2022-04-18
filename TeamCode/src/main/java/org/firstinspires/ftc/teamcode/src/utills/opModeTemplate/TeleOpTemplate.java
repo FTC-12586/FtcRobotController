@@ -49,7 +49,6 @@ public abstract class TeleOpTemplate extends GenericOpModeTemplate {
     }
 
 
-
     /**
      * Initializes the Odometry Servos
      */

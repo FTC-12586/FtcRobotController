@@ -63,7 +63,7 @@ public abstract class WorldsAutonomousProgram extends AutoObjDetectionTemplateCV
         slide.waitOn();
 
         outtake.open();
-        Thread.sleep(2000);
+        Thread.sleep(500);
         outtake.close();
     }
 
@@ -86,7 +86,7 @@ public abstract class WorldsAutonomousProgram extends AutoObjDetectionTemplateCV
         // we do not need to check for color sensor bc back intake motors are never spun
 
         while (!spaceBar.isPressed()) {
-            //reset the time at the beginnning of this loop
+            //reset the time at the beginning of this loop
             t.reset();
 
             drive.goForwardSimple(power);
@@ -96,7 +96,7 @@ public abstract class WorldsAutonomousProgram extends AutoObjDetectionTemplateCV
 
                 if (spaceBar.isPressed()) {
 
-                    //once the spacebar is triggerred turn off the front intake wheels and stop the movement
+                    //once the spacebar is triggered turn off the front intake wheels and stop the movement
                     drive.halt();
                     intake.setFrontMotorPower(0);
                     return;

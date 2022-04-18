@@ -7,8 +7,6 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.src.utills.Controllable;
-
 /**
  * A class to control the robot carousel spinner
  */
@@ -101,14 +99,52 @@ public class CarouselSpinnerImpl implements CarouselSpinner {
         this.halt();
     }
 
+    @Override
+    public void spinOffRedDuckSlow() throws InterruptedException {
+        setServoPower(0.5);
+
+        ElapsedTime t = new ElapsedTime();
+
+        Thread.sleep((long) (duckSleepTime * sleepPercentage)); //Sleep for the majority of the second half of duck spin time
+
+        //Spin wait for the rest
+        while (t.milliseconds() < duckSleepTime) {
+            Thread.yield();
+            if (Thread.currentThread().isInterrupted()) {
+                throw new InterruptedException();
+            }
+        }
+        this.halt();
+
+
+    }
+
+    @Override
+    public void spinOffBlueDuckSlow() throws InterruptedException {
+        setServoPower(0.5);
+
+        ElapsedTime t = new ElapsedTime();
+        Thread.sleep((long) (duckSleepTime * sleepPercentage)); //Sleep for the majority of first half of the duck spin time
+
+        //Spin wait for the rest
+        while (t.milliseconds() < duckSleepTime) {
+            Thread.yield();
+            if (Thread.currentThread().isInterrupted()) {
+                throw new InterruptedException();
+            }
+        }
+        this.halt();
+
+    }
+
     /**
      * Sets power to the internal servos
      *
      * @param power The power to set the servos, in range [-1,1]
      */
     private void setServoPower(double power) {
-        leftServo.setPower(power * leftServoMultiplier * servoPower);
-        rightServo.setPower(power * rightServoMultiplier * servoPower);
+        leftServo.setPower(power);
+        rightServo.setPower(power);
     }
 
     /**
@@ -127,11 +163,11 @@ public class CarouselSpinnerImpl implements CarouselSpinner {
      */
     @Override
     public Void gamepadControl(@NonNull Gamepad gamepad1, @NonNull Gamepad gamepad2) {
-        if (gamepad2.x){
+        if (gamepad2.x) {
             this.setServoPower(servoPower);
-        }else if(gamepad2.b){
+        } else if (gamepad2.b) {
             this.setServoPower(-servoPower);
-        }else {
+        } else {
             this.halt();
         }
         return null;

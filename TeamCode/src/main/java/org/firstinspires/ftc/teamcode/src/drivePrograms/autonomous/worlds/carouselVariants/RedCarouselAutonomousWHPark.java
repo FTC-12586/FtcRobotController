@@ -36,8 +36,7 @@ public class RedCarouselAutonomousWHPark extends WorldsAutonomousProgram {
 
     @Override
     public void opModeMain() throws InterruptedException {
-        this.initAll();
-        this.switchWebcam();
+        this.initAll(LeftWebcamName);
 
         final SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 

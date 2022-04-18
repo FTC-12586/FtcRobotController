@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.worlds.WorldsAutonomousProgram;
 import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.linearSlide.HeightLevel;
+import org.firstinspires.ftc.teamcode.src.utills.Executable;
 import org.firstinspires.ftc.teamcode.src.utills.enums.BarcodePositions;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
@@ -19,6 +20,7 @@ public class BlueCarouselAutonomousWHPark extends WorldsAutonomousProgram {
     final static Pose2d startPos = new Pose2d(-34, 65, 0);
     final static Pose2d dropOffPos = new Pose2d(-27, 23.5, Math.toRadians(180));
     final static Pose2d warehouseCrossPos = new Pose2d(11, 46, 0);
+    static BarcodePositions detectedPos = null;
 
     public BlueCarouselAutonomousWHPark() {
         super(BlinkinPattern.BLUE);
@@ -35,6 +37,9 @@ public class BlueCarouselAutonomousWHPark extends WorldsAutonomousProgram {
 
     @Override
     public void opModeMain() throws InterruptedException {
+
+        final Executable<BarcodePositions> getPos = () -> BlueCarouselAutonomousWHPark.detectedPos;
+
         initAll();
 
         leds.setPattern(defaultColor);
@@ -42,22 +47,22 @@ public class BlueCarouselAutonomousWHPark extends WorldsAutonomousProgram {
         drive.setPoseEstimate(startPos);
 
         // From
-        final Trajectory toGoal = BlueCarouselAutonomous.ToGoalTraj(drive, startPos);
+        final Trajectory toGoal = BlueCarouselAutonomous.ToGoalTraj(drive, startPos, slide, getPos);
 
-        final TrajectorySequence toSpinner = BlueCarouselAutonomous.ToSpinner(drive, toGoal.end());
+        final TrajectorySequence toSpinner = BlueCarouselAutonomous.ToSpinner(drive, toGoal.end(), slide);
 
         final TrajectorySequence toPark = toEnd(drive, toSpinner.end());
 
         telemetry.addData("Setup", "Finished");
         telemetry.update();
 
-        final BarcodePositions pos = this.monitorMarkerWhileWaitForStart();
+        detectedPos = this.monitorMarkerWhileWaitForStart();
 
         if (!isStopRequested()) {
 
             drive.followTrajectory(toGoal);
 
-            this.dropOffItem(pos);
+            this.dropOffItem(detectedPos);
 
             drive.followTrajectorySequence(toSpinner);
             slide.setTargetLevel(HeightLevel.Down);

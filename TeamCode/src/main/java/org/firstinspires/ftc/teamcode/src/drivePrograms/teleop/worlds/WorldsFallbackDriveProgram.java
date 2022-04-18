@@ -89,7 +89,8 @@ public class WorldsFallbackDriveProgram extends TeleOpTemplate {
                         RobotLog.e("Turret failed to be controlled");
                         try {
                             turret.halt();
-                        } catch (RuntimeException ignored) {}
+                        } catch (RuntimeException ignored) {
+                        }
                     }
                 } else {
                     try {
@@ -98,7 +99,8 @@ public class WorldsFallbackDriveProgram extends TeleOpTemplate {
                         RobotLog.e("Drive Train failed to be controlled");
                         try {
                             driveTrain.halt();
-                        } catch (RuntimeException ignored) {}
+                        } catch (RuntimeException ignored) {
+                        }
                     }
                 }
 
@@ -115,7 +117,8 @@ public class WorldsFallbackDriveProgram extends TeleOpTemplate {
                         RobotLog.e("Drive Train failed to be controlled");
                         try {
                             driveTrain.halt();
-                        } catch (RuntimeException ignored) {}
+                        } catch (RuntimeException ignored) {
+                        }
                     }
 
                     try {
@@ -139,7 +142,8 @@ public class WorldsFallbackDriveProgram extends TeleOpTemplate {
                     RobotLog.e("Spinner failed to be controlled");
                     try {
                         spinner.halt();
-                    } catch (RuntimeException ignored) {}
+                    } catch (RuntimeException ignored) {
+                    }
                 }
 
                 try {
@@ -158,7 +162,8 @@ public class WorldsFallbackDriveProgram extends TeleOpTemplate {
                     RobotLog.e("Outtake failed to be controlled");
                     try {
                         outtake.halt();
-                    } catch (RuntimeException ignored) {}
+                    } catch (RuntimeException ignored) {
+                    }
                 }
 
                 try {
@@ -167,7 +172,8 @@ public class WorldsFallbackDriveProgram extends TeleOpTemplate {
                     RobotLog.e("Intake failed to be controlled");
                     try {
                         intake.halt();
-                    } catch (RuntimeException ignored) {}
+                    } catch (RuntimeException ignored) {
+                    }
                 }
             }
             Thread.yield();
