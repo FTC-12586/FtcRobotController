@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.worlds.carou
 
 import static com.qualcomm.hardware.rev.RevBlinkinLedDriver.BlinkinPattern;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
@@ -16,7 +15,7 @@ import org.firstinspires.ftc.teamcode.src.utills.Executable;
 import org.firstinspires.ftc.teamcode.src.utills.enums.BarcodePositions;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-@Config
+//@Config
 @Autonomous(name = "🟦Blue Carousel Autonomous🟦", group = "BlueCarousel")
 public class BlueCarouselAutonomous extends WorldsAutonomousProgram {
     final static Pose2d startPos = new Pose2d(-34, 65, 0);
@@ -72,9 +71,10 @@ public class BlueCarouselAutonomous extends WorldsAutonomousProgram {
                 .build();
     }
 
-    public static Trajectory ToEnd(SampleMecanumDrive drive, Pose2d startPos) {
+    public static Trajectory ToEnd(SampleMecanumDrive drive, Pose2d startPos, LinearSlide slide) {
         return drive.trajectoryBuilder(startPos)
                 //Park
+                .addSpatialMarker(startPos.plus(parkPos.plus(new Pose2d(10, -1))).div(2).vec(), () -> slide.setTargetLevel(HeightLevel.Down))
                 .lineTo(parkPos.vec().plus(new Vector2d(10, -1)))
                 .build();
     }
@@ -94,7 +94,7 @@ public class BlueCarouselAutonomous extends WorldsAutonomousProgram {
 
         final TrajectorySequence toSpinner = BlueCarouselAutonomous.ToSpinner(drive, toGoal.end(), slide);
 
-        final Trajectory toPark = ToEnd(drive, toSpinner.end());
+        final Trajectory toPark = ToEnd(drive, toSpinner.end(), slide);
 
         telemetry.addData("Setup", "Finished");
         telemetry.update();

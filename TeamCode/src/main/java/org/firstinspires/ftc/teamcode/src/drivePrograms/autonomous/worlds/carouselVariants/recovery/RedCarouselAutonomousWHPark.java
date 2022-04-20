@@ -1,9 +1,7 @@
-package org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.worlds.carouselVariants;
+package org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.worlds.carouselVariants.recovery;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
-import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -11,11 +9,13 @@ import org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.worlds.Worlds
 import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.linearSlide.HeightLevel;
 import org.firstinspires.ftc.teamcode.src.utills.Executable;
 import org.firstinspires.ftc.teamcode.src.utills.enums.BarcodePositions;
+import org.firstinspires.ftc.teamcode.src.utills.opModeTemplate.AutonomousTemplate;
+import org.firstinspires.ftc.teamcode.src.utills.opModeTemplate.GenericOpModeTemplate;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @SuppressWarnings("unused")
-@Config
-@Autonomous(name = "🟥Red Carousel WH Park Autonomous🟥tmp", group = "RedCarousel")
+//@Config
+@Autonomous(name = "☠🟥Red Carousel WH Park Autonomous🟥☠", group = "recovery")
 public class RedCarouselAutonomousWHPark extends WorldsAutonomousProgram {
     static final Pose2d startPos = new Pose2d(-40, -65, Math.toRadians(0));
     static final Pose2d dropOffPos = new Pose2d(-33, -25, Math.toRadians(180));
@@ -26,7 +26,7 @@ public class RedCarouselAutonomousWHPark extends WorldsAutonomousProgram {
     BarcodePositions detectedPos;
 
     public RedCarouselAutonomousWHPark() {
-        super(RevBlinkinLedDriver.BlinkinPattern.RED);
+        super(GenericOpModeTemplate.LEDErrorColor);
     }
 
     public static TrajectorySequence toEnd(SampleMecanumDrive drive, Pose2d startPos) {
@@ -39,7 +39,7 @@ public class RedCarouselAutonomousWHPark extends WorldsAutonomousProgram {
 
     @Override
     public void opModeMain() throws InterruptedException {
-        this.initAll(LeftWebcamName);
+        ((AutonomousTemplate) this).initAll();
 
         final Executable<BarcodePositions> getPos = () -> detectedPos;
 
@@ -50,15 +50,16 @@ public class RedCarouselAutonomousWHPark extends WorldsAutonomousProgram {
         drive.setPoseEstimate(startPos);
 
         // From
-        final Trajectory toGoal = RedCarouselAutonomous.ToGoalTraj(drive, startPos,slide, getPos);
+        final Trajectory toGoal = RedCarouselAutonomous.ToGoalTraj(drive, startPos, slide, getPos);
 
-        final TrajectorySequence toSpinner = RedCarouselAutonomous.ToSpinner(drive, toGoal.end(),slide);
+        final TrajectorySequence toSpinner = RedCarouselAutonomous.ToSpinner(drive, toGoal.end(), slide);
 
         final TrajectorySequence toPark = toEnd(drive, toSpinner.end());
 
         telemetry.addData("Setup", "Finished");
         telemetry.update();
-        detectedPos = this.monitorMarkerWhileWaitForStart();
+        detectedPos = BarcodePositions.NotSeen;
+        waitForStart();
 
 
         if (!isStopRequested()) {

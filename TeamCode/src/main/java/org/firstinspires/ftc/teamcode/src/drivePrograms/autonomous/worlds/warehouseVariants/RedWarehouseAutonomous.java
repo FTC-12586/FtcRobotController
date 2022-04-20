@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.worlds.warehouseVariants;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -11,7 +10,7 @@ import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.linearSlid
 import org.firstinspires.ftc.teamcode.src.utills.enums.BarcodePositions;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-@Config
+//@Config
 @Autonomous(name = "🟥Red Warehouse Autonomous🟥", group = "RedWarehouse")
 public class RedWarehouseAutonomous extends WorldsAutonomousProgram {
     final static Pose2d startPos = new Pose2d(7, -65, 0);

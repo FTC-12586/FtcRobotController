@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.worlds.warehouseVariants;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -15,7 +14,7 @@ import org.firstinspires.ftc.teamcode.src.utills.enums.BarcodePositions;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Disabled
-@Config
+//@Config
 @Autonomous(name = "🟦Blue Warehouse Autonomous Freight🟦", group = "BlueWarehouse")
 public class BlueWarehouseAutonomousFreight extends WorldsAutonomousProgram {
     final static Pose2d startPos = new Pose2d(7, 65, 0);

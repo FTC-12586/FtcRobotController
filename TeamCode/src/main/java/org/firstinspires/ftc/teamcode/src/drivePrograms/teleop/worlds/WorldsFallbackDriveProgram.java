@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.RobotLog;
 import org.firstinspires.ftc.teamcode.src.utills.opModeTemplate.GenericOpModeTemplate;
 import org.firstinspires.ftc.teamcode.src.utills.opModeTemplate.TeleOpTemplate;
 
-@TeleOp(name = "☠Recovery Drive Program☠")
+@TeleOp(name = "☠Worlds Drive Program☠", group = "recovery")
 public class WorldsFallbackDriveProgram extends TeleOpTemplate {
     private boolean tapeMeasureCtrl = false;
     private boolean x_depressed = true;

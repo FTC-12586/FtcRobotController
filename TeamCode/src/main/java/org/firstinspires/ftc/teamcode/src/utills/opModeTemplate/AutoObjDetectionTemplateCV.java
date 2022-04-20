@@ -229,6 +229,7 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
     }
 
     public void initOpenCV(String CameraName) {
+        RobotLog.d("OpenCV Init Started");
 
         WebcamName camName = hardwareMap.get(WebcamName.class, CameraName);
 
@@ -240,6 +241,7 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
 
         // Webcam Streaming
         webcam.openCameraDeviceAsync(defaultListener);
+        RobotLog.d("OpenCV Init Finished");
 
 
     }
