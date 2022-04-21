@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class TapeMeasureTurretImpl implements TapeMeasureTurret {
-    private final CRServo tapeMeasure;
+    public final CRServo tapeMeasure;
     private final CRServo pitch;
     private final CRServo yaw;
 

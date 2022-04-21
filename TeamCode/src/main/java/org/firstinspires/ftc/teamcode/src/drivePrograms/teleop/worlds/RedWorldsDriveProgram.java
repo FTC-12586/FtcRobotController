@@ -5,6 +5,7 @@ import static com.qualcomm.hardware.rev.RevBlinkinLedDriver.BlinkinPattern;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.tapemeasureturret.TapeMeasureTurretImpl;
 import org.firstinspires.ftc.teamcode.src.utills.enums.FreightFrenzyGameObject;
 import org.firstinspires.ftc.teamcode.src.utills.opModeTemplate.TeleOpTemplate;
 
@@ -93,11 +94,16 @@ public class RedWorldsDriveProgram extends TeleOpTemplate {
                 if (proposedPattern != null && proposedPattern != currentPattern) {
                     currentPattern = proposedPattern;
                     leds.setPattern(currentPattern);
-                } else {
-                    if (currentPattern != defaultColor) {
-                        currentPattern = defaultColor;
-                        leds.setPattern(this.defaultColor);
-                    }
+
+                } else if (proposedPattern == null) {
+                    currentPattern = defaultColor;
+                    leds.setPattern(currentPattern);
+                }
+
+                if (Math.abs(gamepad2.right_stick_y) > 0.1 && !tapeMeasureCtrl) {
+                    ((TapeMeasureTurretImpl) turret).tapeMeasure.setPower(gamepad2.right_stick_y);
+                } else if (!tapeMeasureCtrl && gamepad2.right_stick_y == 0) {
+                    ((TapeMeasureTurretImpl) turret).tapeMeasure.setPower(0);
                 }
 
             }

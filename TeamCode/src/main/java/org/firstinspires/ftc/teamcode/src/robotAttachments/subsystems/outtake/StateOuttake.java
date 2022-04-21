@@ -133,7 +133,7 @@ public class StateOuttake implements Outtake {
      * @return The {@link FreightFrenzyStateObject} inside the bucket
      */
     public FreightFrenzyGameObject identifyContents() {
-        return FreightFrenzyStateObject.identify(this.getRGB()).toFFGO();
+        return FreightFrenzyGameObject.identify(this.getRGB());
     }
 
     /**

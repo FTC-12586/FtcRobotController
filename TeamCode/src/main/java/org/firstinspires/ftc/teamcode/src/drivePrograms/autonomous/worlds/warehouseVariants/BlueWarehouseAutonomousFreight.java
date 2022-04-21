@@ -5,7 +5,6 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.worlds.WorldsAutonomousProgram;
 import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.linearSlide.HeightLevel;
@@ -61,6 +60,7 @@ public class BlueWarehouseAutonomousFreight extends WorldsAutonomousProgram {
         final TrajectorySequence toWHFreight = ToWareHouseFreight(drive, startToHub.end(), slide);
 
         final TrajectorySequence toHubFreight = ToHubFreight(drive, toWHFreight.end().plus(new Pose2d(0, 1, 0)));
+        // startting position for to HubFreight is the end of toWHFreight with 1 inch extra in y since the robot repositions against the wall
 
         telemetry.addData("Setup", "Finished");
         telemetry.update();
@@ -95,33 +95,10 @@ public class BlueWarehouseAutonomousFreight extends WorldsAutonomousProgram {
             // the following could probably be put in a method in WorldsAutonomous
             //reposition using wall and distance sensor
 
-            double xTarget = toWHFreight.end().getX();
-            double xPos = (70 - (frontDistanceSensor.getDistance(DistanceUnit.INCH) + 7.25));
-            double distanceToXPos = xTarget - xPos;
-            double power;
+            distanceSensorReposition(toWHFreight.end().getX(), 1);
 
-            while (distanceToXPos > 1 || distanceToXPos < -1 && !isStopRequested() && opModeIsActive()) {
+            // from thias point on we should have a consistent starting value compatible with a RR predetermined position
 
-
-                xPos = (70 - (frontDistanceSensor.getDistance(DistanceUnit.INCH) + 7.25));// this is the X value from distance sensor
-                distanceToXPos = xTarget - xPos; // the distance between ideal and actual
-
-
-                power = (.1 + distanceToXPos / 20);// power is proportional plus a baseline of .1
-
-                if (distanceToXPos > 1) {
-                    drive.goForwardSimple(power);
-                    telemetry.addData("", intakeDistanceSensor.getDistance(DistanceUnit.INCH) + 7.25);
-                    telemetry.update();
-                } else {
-                    drive.goBackwardsSimple(power);
-                    telemetry.addData("", intakeDistanceSensor.getDistance(DistanceUnit.INCH) + 7.25);
-                    telemetry.update();
-                }
-            }
-            drive.halt();
-
-            // from this point on we should have a consistent starting value compatible with a RR predetermined position
 
             drive.followTrajectorySequence(toHubFreight);
 
