@@ -22,7 +22,9 @@ public abstract class WorldsAutonomousProgram extends AutoObjDetectionTemplateCV
     public void initAll() throws InterruptedException {
         super.initAll();
         leds.setPattern(defaultColor);
+        checkStop();
         System.gc();
+        checkStop();
     }
 
     protected BarcodePositions monitorMarkerWhileWaitForStart() {
@@ -196,11 +198,8 @@ public abstract class WorldsAutonomousProgram extends AutoObjDetectionTemplateCV
                 drive.goForwardSimple(power);
                 telemetry.addData("", frontDistanceSensor.getDistance(DistanceUnit.INCH) + 7.25);
                 telemetry.update();
-            } else if (distanceToXPos < -tolerance) {
-                drive.goBackwardsSimple(power);
-                telemetry.addData("", frontDistanceSensor.getDistance(DistanceUnit.INCH) + 7.25);
-                telemetry.update();
             }
+
         }
         drive.halt();
     }

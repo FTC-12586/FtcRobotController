@@ -32,7 +32,7 @@ public class RedCarouselAutonomous extends WorldsAutonomousProgram {
     public static Trajectory ToGoalTraj(SampleMecanumDrive drive, Pose2d startPos, LinearSlide slide, Executable<BarcodePositions> getPos) {
         return drive.trajectoryBuilder(startPos)
                 // Side in
-                .lineToConstantHeading(parkPos.plus(new Pose2d(10, -15, 0)).vec())
+                .lineToConstantHeading(parkPos.plus(new Pose2d(10, -10, 0)).vec())
                 // Cross Box
                 .splineToSplineHeading(new Pose2d(parkPos.getX() + 12, parkPos.getY() + 10, dropOffPos.getHeading() + Math.toRadians(10)), Math.toRadians(0))
                 .addSpatialMarker(
@@ -65,22 +65,21 @@ public class RedCarouselAutonomous extends WorldsAutonomousProgram {
     public static TrajectorySequence ToSpinner(SampleMecanumDrive drive, Pose2d startPos, LinearSlide slide) {
         return drive.trajectorySequenceBuilder(startPos)
 
-                .addSpatialMarker(new Pose2d(parkPos.getX() + 20, parkPos.getY() + 15, Math.toRadians(265)).vec().plus(startPos.vec()).div(2), () -> slide.setTargetLevel(HeightLevel.Down))
+                .addSpatialMarker(new Pose2d(parkPos.getX() + 5, parkPos.getY() + 10, Math.toRadians(265)).vec().plus(startPos.vec()).div(2), () -> slide.setTargetLevel(HeightLevel.Down))
 
                 //Back away from goal
                 // Cross Box
-                .lineToConstantHeading(new Pose2d(parkPos.getX() + 10, parkPos.getY() + 10, Math.toRadians(265)).vec())
+                .lineToConstantHeading(new Pose2d(parkPos.getX() + 5, parkPos.getY() + 10, Math.toRadians(265)).vec())
 
                 // Cross Box to Carousel Spinner
                 .splineToSplineHeading(carouselSpinPos.plus(new Pose2d(10, 10, Math.toRadians(-30))), Math.toRadians(-90))
-                .splineToConstantHeading(carouselSpinPos.plus(new Pose2d(0, 1, Math.toRadians(-30))).vec(), Math.toRadians(-90))
+                .splineToConstantHeading(carouselSpinPos.plus(new Pose2d(1.5, 1, Math.toRadians(-30))).vec(), Math.toRadians(-90))
                 .build();
     }
 
     public static Trajectory ToEnd(SampleMecanumDrive drive, Pose2d startPos, LinearSlide slide) {
         return drive.trajectoryBuilder(startPos)
                 //Park
-
                 .addSpatialMarker(startPos.vec().plus(parkPos.vec().plus(new Vector2d(0, 1))).div(2), () -> slide.setTargetLevel(HeightLevel.Down))
 
                 .lineTo(parkPos.vec().plus(new Vector2d(-2, 3)))

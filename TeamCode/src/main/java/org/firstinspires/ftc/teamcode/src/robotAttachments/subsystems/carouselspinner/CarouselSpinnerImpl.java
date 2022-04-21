@@ -101,7 +101,7 @@ public class CarouselSpinnerImpl implements CarouselSpinner {
 
     @Override
     public void spinOffRedDuckSlow() throws InterruptedException {
-        setServoPower(0.5);
+        setServoPower(-0.5);
 
         ElapsedTime t = new ElapsedTime();
 

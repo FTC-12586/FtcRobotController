@@ -6,7 +6,6 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.worlds.WorldsAutonomousProgram;
@@ -17,7 +16,7 @@ import org.firstinspires.ftc.teamcode.src.utills.enums.BarcodePositions;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 //@Config
-@Disabled
+//@Disabled
 @Autonomous(name = "🟥Red Carousel Autonomous Duck🟥", group = "RedCarousel")
 public class RedCarouselAutonomousDuck extends WorldsAutonomousProgram {
     static final Pose2d startPos = new Pose2d(-40, -65, Math.toRadians(0));
@@ -36,20 +35,25 @@ public class RedCarouselAutonomousDuck extends WorldsAutonomousProgram {
         return drive.trajectorySequenceBuilder(startPos)
                 .setConstraints((these, are, velocity, parameters) -> 5, (these, are, acceleration, parameters) -> 15)
 
-                .lineToConstantHeading(startPos.plus(new Pose2d(6, 0)).vec())
+                .lineToConstantHeading(startPos.plus(new Pose2d(3, 0)).vec())
+                .lineToConstantHeading(startPos.plus(new Pose2d(3, -3)).vec())
                 .splineToConstantHeading(startPos.plus(new Pose2d(6, -6)).vec(), Math.toRadians(285))
-                .splineToConstantHeading(startPos.plus(new Pose2d(8, -8)).vec(), Math.toRadians(285))
-                .splineToConstantHeading(startPos.plus(new Pose2d(12, -12)).vec(), 0)
+                .splineToConstantHeading(startPos.plus(new Pose2d(8, -7)).vec(), Math.toRadians(285))
+                .splineToConstantHeading(startPos.plus(new Pose2d(12, -8)).vec(), 0)
 
                 .build();
 
     }
 
-    public static Trajectory BackToGoalTraj(SampleMecanumDrive drive, Pose2d startPos, LinearSlide slide, Executable<BarcodePositions> getPos) {
-        return drive.trajectoryBuilder(startPos)
+    public static TrajectorySequence BackToGoalTraj(SampleMecanumDrive drive, Pose2d startPos, LinearSlide slide, Executable<BarcodePositions> getPos) {
+        return drive.trajectorySequenceBuilder(startPos)
                 // Cross Box
-                .splineToSplineHeading(new Pose2d(parkPos.getX() + 20, parkPos.getY() + 15, dropOffPos.getHeading()), Math.toRadians(180))
-                .addSpatialMarker(dropOffPos.vec(), () -> {
+
+                .setConstraints((v, pose2d, pose2d1, pose2d2) -> 15, (v, pose2d, pose2d1, pose2d2) -> 15)
+
+                .splineToSplineHeading(new Pose2d(parkPos.getX(), parkPos.getY() + 5, dropOffPos.getHeading()), Math.toRadians(90))
+
+                .addSpatialMarker(dropOffPos.vec().plus(new Vector2d(-15)), () -> {
                     switch (getPos.call()) {
                         case Center:
                             slide.setTargetLevel(HeightLevel.MiddleLevel);
@@ -65,8 +69,11 @@ public class RedCarouselAutonomousDuck extends WorldsAutonomousProgram {
 
                 })
 
+
                 //Approach Goal
-                .splineToSplineHeading(dropOffPos.plus(new Pose2d(12, -8, Math.toRadians(-20))), Math.toRadians(0))
+                .splineToSplineHeading(dropOffPos.plus(new Pose2d(-3, 7, Math.toRadians(5))), Math.toRadians(0))
+
+
                 .build();
     }
 
@@ -90,16 +97,31 @@ public class RedCarouselAutonomousDuck extends WorldsAutonomousProgram {
 
         // From
         final Trajectory toGoal = RedCarouselAutonomous.ToGoalTraj(drive, startPos, slide, getPos);
+        checkStop();
 
         final TrajectorySequence toSpinner = RedCarouselAutonomous.ToSpinner(drive, toGoal.end(), slide);
+        checkStop();
 
         final TrajectorySequence pickingUpDuck = PickingUpDuck(drive, toSpinner.end());
 
-        final Trajectory backToGoal = BackToGoalTraj(drive, pickingUpDuck.end(), slide, getPos);
+        checkStop();
 
-        final Trajectory toPark = RedCarouselAutonomous.ToEnd(drive, backToGoal.end(), slide);
+        final TrajectorySequence backToGoal = BackToGoalTraj(drive, pickingUpDuck.end(), slide, getPos);
+        checkStop();
+
+        Pose2d startPos1 = backToGoal.end();
+        final Trajectory toPark = drive.trajectoryBuilder(startPos1)
+                .forward(7)
+
+                //Park
+                .addSpatialMarker(startPos1.vec().plus(RedCarouselAutonomous.parkPos.vec().plus(new Vector2d(0, 1))).div(2), () -> slide.setTargetLevel(HeightLevel.Down))
+
+                .splineTo(RedCarouselAutonomous.parkPos.vec().plus(new Vector2d(-2, 3)), Math.toRadians(270))
+                .build();
+        checkStop();
 
         final Trajectory altPark = AltPark(drive, pickingUpDuck.end(), slide);
+        checkStop();
 
         telemetry.addData("Setup", "Finished");
         telemetry.update();
@@ -124,26 +146,41 @@ public class RedCarouselAutonomousDuck extends WorldsAutonomousProgram {
 
             slide.setTargetLevel(HeightLevel.Down);
 
-            spinner.spinOffRedDuckSlow();
+            spinner.spinOffRedDuck();
 
             intake.setMotorPower(1);
 
             drive.followTrajectorySequence(pickingUpDuck);
 
+            detectedPos = BarcodePositions.NotSeen;
+
+            drive.followTrajectorySequence(backToGoal);
+
+            outtake.open();
+
+            intake.setMotorPower(0);
+
+            this.dropOffItem(BarcodePositions.NotSeen);
+
+            drive.followTrajectory(toPark);
+
+
             if (true) {//outtake.identifyContents() != FreightFrenzyGameObject.EMPTY) {
 
-                detectedPos = BarcodePositions.NotSeen;
+                //detectedPos = BarcodePositions.NotSeen;
 
-                drive.followTrajectory(backToGoal);
+                //drive.followTrajectorySequence(backToGoal);
 
-                intake.setMotorPower(0);
+                //intake.setMotorPower(0);
 
-                this.dropOffItem(BarcodePositions.NotSeen);
+                //this.dropOffItem(BarcodePositions.NotSeen);
 
-                drive.followTrajectory(toPark);
+                //drive.followTrajectory(toPark);
             } else {
                 drive.followTrajectory(altPark);
             }
+
+
         }
 
     }

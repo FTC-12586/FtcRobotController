@@ -154,8 +154,11 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
      * @throws InterruptedException Throws if OpMode is stopped during execution
      */
     public void initAll() throws InterruptedException {
+        checkStop();
         this.initOpenCV(GenericOpModeTemplate.RightWebcamName);
+        checkStop();
         super.initAll();
+        checkStop();
     }
 
     /**
@@ -228,18 +231,28 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
         return BarcodePositions.NotSeen;
     }
 
-    public void initOpenCV(String CameraName) {
+    public void initOpenCV(String CameraName) throws InterruptedException {
         RobotLog.d("OpenCV Init Started");
+
+        checkStop();
 
         WebcamName camName = hardwareMap.get(WebcamName.class, CameraName);
 
+        checkStop();
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 
+        checkStop();
+
         webcam = OpenCvCameraFactory.getInstance().createWebcam(camName, cameraMonitorViewId);
+
+        checkStop();
 
         webcam.setPipeline(myPipeline);
 
         // Webcam Streaming
+        checkStop();
+
         webcam.openCameraDeviceAsync(defaultListener);
         RobotLog.d("OpenCV Init Finished");
 
