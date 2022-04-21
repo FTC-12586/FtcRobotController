@@ -172,8 +172,8 @@ public abstract class WorldsAutonomousProgram extends AutoObjDetectionTemplateCV
     public final void distanceSensorReposition(final double roadRunnerXVal, final double tolerance) {
         double xPos = (70 - (frontDistanceSensor.getDistance(DistanceUnit.INCH) + 7.25));
 
-        double distanceToXPos = roadRunnerXVal - xPos; // this will be negative when robot is further forward and positive when robot is too far back
-
+        double distanceToXPos = roadRunnerXVal - xPos;// this will be negative when robot is further forward and positive when robot is too far back
+        double initialDistance = distanceToXPos;
 
         while (Math.abs(distanceToXPos) > tolerance && !isStopRequested() && opModeIsActive()) {
 
@@ -187,10 +187,12 @@ public abstract class WorldsAutonomousProgram extends AutoObjDetectionTemplateCV
             xPos = (ROADRUNNER_SCALE_VAL - (frontDistanceSensor.getDistance(DistanceUnit.INCH) + DISTANCE_SENSOR_OFFSET));// this is the X value from distance sensor
             distanceToXPos = roadRunnerXVal - xPos; // the distance between ideal and actual
 
-            final double power = (.1 + distanceToXPos / 20);// power is proportional plus a baseline of .1
+            // final double power = (.1 + distanceToXPos / 20);// power is proportional plus a baseline of .1
+
+            final double power = shortMovementPowerCalculation(initialDistance, distanceToXPos, .3, .1);
 
 
-            if (distanceToXPos > tolerance) {
+            if (Math.abs(distanceToXPos) > tolerance) {
                 drive.goForwardSimple(power);
                 telemetry.addData("", frontDistanceSensor.getDistance(DistanceUnit.INCH) + 7.25);
                 telemetry.update();

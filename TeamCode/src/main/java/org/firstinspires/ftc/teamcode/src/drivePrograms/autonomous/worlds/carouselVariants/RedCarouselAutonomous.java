@@ -35,24 +35,30 @@ public class RedCarouselAutonomous extends WorldsAutonomousProgram {
                 .lineToConstantHeading(parkPos.plus(new Pose2d(10, -15, 0)).vec())
                 // Cross Box
                 .splineToSplineHeading(new Pose2d(parkPos.getX() + 12, parkPos.getY() + 10, dropOffPos.getHeading() + Math.toRadians(10)), Math.toRadians(0))
-                .addSpatialMarker(dropOffPos.vec(), () -> {
-                    switch (getPos.call()) {
-                        case Center:
-                            slide.setTargetLevel(HeightLevel.MiddleLevel);
-                            break;
+                .addSpatialMarker(
+                        new Pose2d(
+                                parkPos.getX() + 12, parkPos.getY() + 10, dropOffPos.getHeading() + Math.toRadians(10)
+                        )
+                                .plus(
+                                        dropOffPos.plus(new Pose2d(2, 2, Math.toRadians(0)))
+                                ).vec(), () -> {
+                            switch (getPos.call()) {
+                                case Center:
+                                    slide.setTargetLevel(HeightLevel.MiddleLevel);
+                                    break;
 
-                        case Left:
-                            slide.setTargetLevel(HeightLevel.BottomLevel);
-                            break;
+                                case Left:
+                                    slide.setTargetLevel(HeightLevel.BottomLevel);
+                                    break;
 
-                        default:
-                            slide.setTargetLevel(HeightLevel.TopLevel);
-                    }
+                                default:
+                                    slide.setTargetLevel(HeightLevel.TopLevel);
+                            }
 
-                })
+                        })
 
                 //Approach Goal
-                .splineToSplineHeading(dropOffPos.plus(new Pose2d(2, 2, Math.toRadians(-10))), Math.toRadians(0))
+                .splineToSplineHeading(dropOffPos.plus(new Pose2d(2, 2, Math.toRadians(0))), Math.toRadians(0))
                 .build();
     }
 
@@ -77,7 +83,7 @@ public class RedCarouselAutonomous extends WorldsAutonomousProgram {
 
                 .addSpatialMarker(startPos.vec().plus(parkPos.vec().plus(new Vector2d(0, 1))).div(2), () -> slide.setTargetLevel(HeightLevel.Down))
 
-                .lineTo(parkPos.vec().plus(new Vector2d(0, 1)))
+                .lineTo(parkPos.vec().plus(new Vector2d(-2, 3)))
                 .build();
     }
 
