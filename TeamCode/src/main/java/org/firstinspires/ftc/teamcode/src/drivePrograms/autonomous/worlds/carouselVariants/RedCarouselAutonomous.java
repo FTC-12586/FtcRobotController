@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.worlds.carou
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -27,16 +26,29 @@ public class RedCarouselAutonomous extends WorldsAutonomousProgram {
 
     BarcodePositions detectedPos;
 
+    public static double LraiseAmmount = 0.04;
+    public static double HraiseAmmount = 0.04;
+    public static double RraiseAmmount = 0.04;
+
+    public static double crossOffsetX = 8;
+
+    public static double vMax = 15;
+
+    public static double aMax = 10;
+
     public RedCarouselAutonomous() {
         super(RevBlinkinLedDriver.BlinkinPattern.RED);
     }
 
-    public static double RraiseAmmount = 0.04;
+    public static double xAdjust = 0;
+    public static double yAdjust = -0;
+    public static double rotAdjust = -0;
 
     public static TrajectorySequence ToSpinner(SampleMecanumDrive drive, Pose2d startPos, LinearSlide slide) {
         return drive.trajectorySequenceBuilder(startPos)
+                .setConstraints((one, two, three, v) -> vMax, (one, two, three, a) -> aMax)
 
-                .addSpatialMarker(new Pose2d(parkPos.getX() + 5, parkPos.getY() + 10, Math.toRadians(265)).vec().plus(startPos.vec()).div(2), () -> slide.setTargetLevel(HeightLevel.Down))
+                .addSpatialMarker(parkPos.plus(startPos).vec().div(2), () -> slide.setTargetLevel(HeightLevel.Down))
 
                 //Back away from goal
                 // Cross Box
@@ -44,26 +56,22 @@ public class RedCarouselAutonomous extends WorldsAutonomousProgram {
 
                 // Cross Box to Carousel Spinner
                 .splineToSplineHeading(carouselSpinPos.plus(new Pose2d(10, 10, Math.toRadians(-30))), Math.toRadians(-90))
-                .splineToConstantHeading(carouselSpinPos.plus(new Pose2d(1.5, 1, Math.toRadians(-30))).vec(), Math.toRadians(-90))
+                .splineToConstantHeading(carouselSpinPos.plus(new Pose2d(xAdjust, yAdjust, Math.toRadians(-rotAdjust))).vec(), Math.toRadians(-90))
                 .build();
     }
 
     public static Trajectory ToEnd(SampleMecanumDrive drive, Pose2d startPos, LinearSlide slide) {
         return drive.trajectoryBuilder(startPos)
                 //Park
-                .addSpatialMarker(startPos.vec().plus(parkPos.vec().plus(new Vector2d(0, 1))).div(2), () -> slide.setTargetLevel(HeightLevel.Down))
+                .addSpatialMarker(startPos.plus(parkPos).div(2).vec(), () -> slide.setTargetLevel(HeightLevel.Down))
 
-                .lineTo(parkPos.vec().plus(new Vector2d(-1, 1)))
+                .lineToLinearHeading(parkPos)
                 .build();
     }
 
-    public static double LraiseAmmount = 0.04;
-    public static double HraiseAmmount = 0.04;
-    public static double crossOffsetX = 8;
-
     public static TrajectorySequence ToGoalTraj(SampleMecanumDrive drive, Pose2d startPos, LinearSlide slide, Executable<BarcodePositions> getPos) {
         return drive.trajectorySequenceBuilder(startPos)
-                .setConstraints((one, two, three, four) -> 10, (one, two, three, four) -> 10)
+                .setConstraints((one, two, three, v) -> vMax, (one, two, three, a) -> aMax)
 
 
                 // Side in
@@ -92,7 +100,11 @@ public class RedCarouselAutonomous extends WorldsAutonomousProgram {
                         })
 
                 //Approach Goal
-                .splineToSplineHeading(dropOffPos, Math.toRadians(0))
+                .splineToSplineHeading(dropOffPos.plus(new Pose2d(6, -6, Math.toRadians(-6))), Math.toRadians(0))
+
+                .setConstraints((one, two, three, v) -> 10, (one, two, three, a) -> aMax)
+                .back(1)
+
                 .build();
     }
 
@@ -127,9 +139,6 @@ public class RedCarouselAutonomous extends WorldsAutonomousProgram {
         if (!isStopRequested()) {
 
             drive.followTrajectorySequence(toGoal);
-            /*
-
-            drive.turnTo(dropOffPos.getHeading());
 
             this.dropOffItem(detectedPos);
 
@@ -140,8 +149,6 @@ public class RedCarouselAutonomous extends WorldsAutonomousProgram {
             spinner.spinOffRedDuck();
 
             drive.followTrajectory(toPark);
-
-             */
 
 
         }
