@@ -41,15 +41,15 @@ public class OdometryServosImpl implements OdometryServos {
     /**
      * Horizontal Servo Object
      */
-    protected final Servo horizontalServo;
+    public final Servo horizontalServo;
     /**
      * Left Servo Object
      */
-    protected final Servo leftServo;
+    public final Servo leftServo;
     /**
      * Right Servo Object
      */
-    protected final Servo rightServo;
+    public final Servo rightServo;
 
     /**
      * Constructs and initializes servos

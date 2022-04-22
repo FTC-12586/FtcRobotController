@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.worlds.carouselVariants;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
@@ -49,7 +48,7 @@ public class RedCarouselAutonomousWHPark extends WorldsAutonomousProgram {
         drive.setPoseEstimate(startPos);
 
         // From
-        final Trajectory toGoal = RedCarouselAutonomous.ToGoalTraj(drive, startPos, slide, getPos);
+        final TrajectorySequence toGoal = RedCarouselAutonomous.ToGoalTraj(drive, startPos, slide, getPos);
 
         final TrajectorySequence toSpinner = RedCarouselAutonomous.ToSpinner(drive, toGoal.end(), slide);
 
@@ -62,7 +61,7 @@ public class RedCarouselAutonomousWHPark extends WorldsAutonomousProgram {
 
         if (!isStopRequested()) {
 
-            drive.followTrajectory(toGoal);
+            drive.followTrajectorySequence(toGoal);
             drive.turnTo(dropOffPos.getHeading());
 
             this.dropOffItem(detectedPos);

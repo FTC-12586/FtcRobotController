@@ -97,7 +97,7 @@ public class RedCarouselAutonomousDuck extends WorldsAutonomousProgram {
         drive.setPoseEstimate(startPos);
 
         // From
-        final Trajectory toGoal = RedCarouselAutonomous.ToGoalTraj(drive, startPos, slide, getPos);
+        final TrajectorySequence toGoal = RedCarouselAutonomous.ToGoalTraj(drive, startPos, slide, getPos);
         checkStop();
 
         final TrajectorySequence toSpinner = RedCarouselAutonomous.ToSpinner(drive, toGoal.end(), slide);
@@ -137,7 +137,7 @@ public class RedCarouselAutonomousDuck extends WorldsAutonomousProgram {
 
         if (!isStopRequested() && opModeIsActive()) {
 
-            drive.followTrajectory(toGoal);
+            drive.followTrajectorySequence(toGoal);
 
             drive.turnTo(dropOffPos.getHeading());
 
