@@ -58,7 +58,7 @@ public class RedCarouselAutonomous extends WorldsAutonomousProgram {
                         })
 
                 //Approach Goal
-                .splineToSplineHeading(dropOffPos.plus(new Pose2d(2, 2, Math.toRadians(0))), Math.toRadians(0))
+                .splineToSplineHeading(dropOffPos.plus(new Pose2d(9, 2, Math.toRadians(-5))), Math.toRadians(0))
                 .build();
     }
 
@@ -82,7 +82,7 @@ public class RedCarouselAutonomous extends WorldsAutonomousProgram {
                 //Park
                 .addSpatialMarker(startPos.vec().plus(parkPos.vec().plus(new Vector2d(0, 1))).div(2), () -> slide.setTargetLevel(HeightLevel.Down))
 
-                .lineTo(parkPos.vec().plus(new Vector2d(-2, 3)))
+                .lineTo(parkPos.vec().plus(new Vector2d(-1, 1)))
                 .build();
     }
 

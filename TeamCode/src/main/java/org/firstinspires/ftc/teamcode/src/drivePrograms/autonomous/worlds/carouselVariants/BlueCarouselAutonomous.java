@@ -52,7 +52,7 @@ public class BlueCarouselAutonomous extends WorldsAutonomousProgram {
                 })
 
                 //Approach Goal
-                .splineToSplineHeading(dropOffPos.plus(new Pose2d(12, 4, Math.toRadians(20))), Math.toRadians(0))
+                .splineToSplineHeading(dropOffPos.plus(new Pose2d(10, 4, Math.toRadians(20))), Math.toRadians(0))
                 .build();
     }
 

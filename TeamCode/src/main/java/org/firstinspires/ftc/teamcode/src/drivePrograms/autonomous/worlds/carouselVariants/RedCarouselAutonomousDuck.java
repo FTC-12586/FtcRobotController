@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.linearSlid
 import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.linearSlide.LinearSlide;
 import org.firstinspires.ftc.teamcode.src.utills.Executable;
 import org.firstinspires.ftc.teamcode.src.utills.enums.BarcodePositions;
+import org.firstinspires.ftc.teamcode.src.utills.opModeTemplate.GenericOpModeTemplate;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 //@Config
@@ -34,7 +35,7 @@ public class RedCarouselAutonomousDuck extends WorldsAutonomousProgram {
     public static TrajectorySequence PickingUpDuck(SampleMecanumDrive drive, Pose2d startPos) {
         return drive.trajectorySequenceBuilder(startPos)
                 .setConstraints((these, are, velocity, parameters) -> 5, (these, are, acceleration, parameters) -> 15)
-
+                .back(2)
                 .lineToConstantHeading(startPos.plus(new Pose2d(3, 0)).vec())
                 .lineToConstantHeading(startPos.plus(new Pose2d(3, -3)).vec())
                 .splineToConstantHeading(startPos.plus(new Pose2d(6, -6)).vec(), Math.toRadians(285))
@@ -71,7 +72,7 @@ public class RedCarouselAutonomousDuck extends WorldsAutonomousProgram {
 
 
                 //Approach Goal
-                .splineToSplineHeading(dropOffPos.plus(new Pose2d(-3, 7, Math.toRadians(5))), Math.toRadians(0))
+                .splineToSplineHeading(dropOffPos.plus(new Pose2d(7, 7, Math.toRadians(5))), Math.toRadians(0))
 
 
                 .build();
@@ -91,7 +92,7 @@ public class RedCarouselAutonomousDuck extends WorldsAutonomousProgram {
     @Override
     public void opModeMain() throws InterruptedException {
         final Executable<BarcodePositions> getPos = () -> detectedPos;
-        this.initAll();
+        this.initAll(GenericOpModeTemplate.LeftWebcamName);
 
         drive.setPoseEstimate(startPos);
 

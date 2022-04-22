@@ -204,6 +204,29 @@ public abstract class WorldsAutonomousProgram extends AutoObjDetectionTemplateCV
         drive.halt();
     }
 
+    public void driveOverBarriersDistanceSensor() throws InterruptedException {
+        podServos.raise();
+        Thread.sleep(1000);
+
+
+        final double initialDistance = frontDistanceSensor.getDistance(DistanceUnit.INCH);
+        double power;
+
+        while (frontDistanceSensor.getDistance(DistanceUnit.INCH) > 6 && opModeIsActive() && !isStopRequested()) {
+            // power is calculated
+            power = shortMovementPowerCalculation(initialDistance, frontDistanceSensor.getDistance(DistanceUnit.INCH), 1.75, .5);// the max power is set to 2 to steepen the power curve at the end of the movement
+            drive.goForwardSimple(power);
+            //telemetry.addData("power: ", power);
+            //telemetry.update();
+        }
+
+
+        drive.halt();
+        Thread.sleep(500);
+        // this is to keep the robot stopped and from possibly drifting into a wall or another robot
+
+
+    }
 }
 
 
