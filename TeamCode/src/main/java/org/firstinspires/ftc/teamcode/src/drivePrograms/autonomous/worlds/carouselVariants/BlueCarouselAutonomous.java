@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.worlds.carou
 
 import static com.qualcomm.hardware.rev.RevBlinkinLedDriver.BlinkinPattern;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
@@ -11,11 +12,12 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.worlds.WorldsAutonomousProgram;
 import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.linearSlide.HeightLevel;
 import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.linearSlide.LinearSlide;
+import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.podservos.OdometryServosImpl;
 import org.firstinspires.ftc.teamcode.src.utills.Executable;
 import org.firstinspires.ftc.teamcode.src.utills.enums.BarcodePositions;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-//@Config
+@Config
 @Autonomous(name = "🟦Blue Carousel Autonomous🟦", group = "BlueCarousel")
 public class BlueCarouselAutonomous extends WorldsAutonomousProgram {
     final static Pose2d startPos = new Pose2d(-34, 65, 0);
@@ -25,17 +27,34 @@ public class BlueCarouselAutonomous extends WorldsAutonomousProgram {
 
     BarcodePositions detectedPos;
 
+    public static double LraiseAmmount = 0.04;
+    public static double HraiseAmmount = 0.04;
+    public static double RraiseAmmount = 0.04;
+
+    public static double crossOffsetX = 18;
+
+    public static double vMax = 15;
+
+    public static double aMax = 10;
+
+    public static double xAdjust = 7;
+    public static double yAdjust = 5;
+    public static double rotAdjust = 0;
+
     public BlueCarouselAutonomous() {
         super(BlinkinPattern.BLUE);
     }
 
-    public static Trajectory ToGoalTraj(SampleMecanumDrive drive, Pose2d startPos, LinearSlide slide, Executable<BarcodePositions> getPos) {
-        return drive.trajectoryBuilder(startPos)
+    public static TrajectorySequence ToGoalTraj(SampleMecanumDrive drive, Pose2d startPos, LinearSlide slide, Executable<BarcodePositions> getPos) {
+        return drive.trajectorySequenceBuilder(startPos)
+                .setConstraints((one, two, three, v) -> vMax, (one, two, three, a) -> aMax)
+
                 // Side in
-                .lineToConstantHeading(parkPos.plus(new Pose2d(18, 15, 0)).vec())
+                .lineToConstantHeading(parkPos.plus(new Pose2d(crossOffsetX, 15, 0)).vec())
                 // Cross Box
-                .splineToSplineHeading(new Pose2d(parkPos.getX() + 20, parkPos.getY() - 15, dropOffPos.getHeading()), Math.toRadians(0))
-                .addSpatialMarker(dropOffPos.vec(), () -> {
+                .splineToSplineHeading(new Pose2d(parkPos.getX() + crossOffsetX, parkPos.getY() - 15, dropOffPos.getHeading()), Math.toRadians(0))
+
+                .addSpatialMarker(new Vector2d(-48, -24), () -> {
                     switch (getPos.call()) {
                         case Center:
                             slide.setTargetLevel(HeightLevel.MiddleLevel);
@@ -52,30 +71,32 @@ public class BlueCarouselAutonomous extends WorldsAutonomousProgram {
                 })
 
                 //Approach Goal
-                .splineToSplineHeading(dropOffPos.plus(new Pose2d(10, 4, Math.toRadians(20))), Math.toRadians(0))
+                .splineToSplineHeading(dropOffPos.plus(new Pose2d(12, 6, Math.toRadians(10))), Math.toRadians(0))
                 .build();
     }
 
     public static TrajectorySequence ToSpinner(SampleMecanumDrive drive, Pose2d startPos, LinearSlide slide) {
         return drive.trajectorySequenceBuilder(startPos)
 
-                .addSpatialMarker(new Pose2d(parkPos.getX() + 20, parkPos.getY() - 15, Math.toRadians(95)).vec().plus(startPos.vec()).div(2), () -> slide.setTargetLevel(HeightLevel.Down))
+                .setConstraints((one, two, three, v) -> vMax, (one, two, three, a) -> aMax)
+
+                .addSpatialMarker(new Vector2d(-48, -24), () -> slide.setTargetLevel(HeightLevel.Down))
 
                 //Back away from goal
                 // Cross Box
                 .lineToConstantHeading(new Pose2d(parkPos.getX() + 20, parkPos.getY() - 15, Math.toRadians(95)).vec())
 
                 // Cross Box to Carousel Spinner
-                .splineToSplineHeading(carouselSpinPos.plus(new Pose2d(10, -10, Math.toRadians(30))), Math.toRadians(90))
-                .splineToConstantHeading(carouselSpinPos.plus(new Pose2d(5, 3, Math.toRadians(30))).vec(), Math.toRadians(90))
+                .splineToSplineHeading(carouselSpinPos.plus(new Pose2d(10, -10, Math.toRadians(rotAdjust))), Math.toRadians(90))
+                .splineToConstantHeading(carouselSpinPos.plus(new Pose2d(xAdjust, yAdjust, 0)).vec(), Math.toRadians(90))
                 .build();
     }
 
     public static Trajectory ToEnd(SampleMecanumDrive drive, Pose2d startPos, LinearSlide slide) {
         return drive.trajectoryBuilder(startPos)
                 //Park
-                .addSpatialMarker(startPos.plus(parkPos.plus(new Pose2d(10, -1))).div(2).vec(), () -> slide.setTargetLevel(HeightLevel.Down))
-                .lineTo(parkPos.vec().plus(new Vector2d(10, -1)))
+                .addSpatialMarker(startPos.plus(parkPos).div(2).vec(), () -> slide.setTargetLevel(HeightLevel.Down))
+                .lineTo(parkPos.vec().plus(new Vector2d(10)))
                 .build();
     }
 
@@ -87,10 +108,15 @@ public class BlueCarouselAutonomous extends WorldsAutonomousProgram {
 
         drive.setPoseEstimate(startPos);
 
+        ((OdometryServosImpl) podServos).horizontalServo.setPosition(OdometryServosImpl.horizontalServoLowerPosition - HraiseAmmount);
+        ((OdometryServosImpl) podServos).rightServo.setPosition(OdometryServosImpl.rightServoLowerPosition + RraiseAmmount);
+        ((OdometryServosImpl) podServos).leftServo.setPosition(OdometryServosImpl.leftServoLowerPosition - LraiseAmmount);
+
+
         final Executable<BarcodePositions> getPos = () -> detectedPos;
 
         // From
-        final Trajectory toGoal = BlueCarouselAutonomous.ToGoalTraj(drive, startPos, slide, getPos);
+        final TrajectorySequence toGoal = BlueCarouselAutonomous.ToGoalTraj(drive, startPos, slide, getPos);
 
         final TrajectorySequence toSpinner = BlueCarouselAutonomous.ToSpinner(drive, toGoal.end(), slide);
 
@@ -106,7 +132,8 @@ public class BlueCarouselAutonomous extends WorldsAutonomousProgram {
 
         if (!isStopRequested()) {
 
-            drive.followTrajectory(toGoal);
+            drive.followTrajectorySequence(toGoal);
+
             drive.turnTo(dropOffPos.getHeading());
 
             this.dropOffItem(detectedPos);

@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.teamcode.src.utills.enums.RGBCameraColors.Bl
 import static org.firstinspires.ftc.teamcode.src.utills.enums.RGBCameraColors.Green;
 import static org.firstinspires.ftc.teamcode.src.utills.enums.RGBCameraColors.Red;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.src.utills.enums.FreightFrenzyGameObject;
@@ -12,6 +13,7 @@ import org.firstinspires.ftc.teamcode.src.utills.opModeTemplate.TeleOpTemplate;
 /**
  * A Autonomous to test color sensor capabilities
  */
+@Disabled
 @TeleOp(name = "ColorTest")
 public class ColorTest extends TeleOpTemplate {
     public void opModeMain() throws InterruptedException {

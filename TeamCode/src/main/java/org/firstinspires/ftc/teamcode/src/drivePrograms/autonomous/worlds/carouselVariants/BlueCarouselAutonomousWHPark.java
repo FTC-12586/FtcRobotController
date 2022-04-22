@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.worlds.carou
 import static com.qualcomm.hardware.rev.RevBlinkinLedDriver.BlinkinPattern;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.worlds.WorldsAutonomousProgram;
@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.src.utills.enums.BarcodePositions;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 //@Config
+@Disabled
 @Autonomous(name = "🟦Blue Carousel WH Park Autonomous🟦", group = "BlueCarousel")
 public class BlueCarouselAutonomousWHPark extends WorldsAutonomousProgram {
     final static Pose2d startPos = new Pose2d(-34, 65, 0);
@@ -46,7 +47,7 @@ public class BlueCarouselAutonomousWHPark extends WorldsAutonomousProgram {
         drive.setPoseEstimate(startPos);
 
         // From
-        final Trajectory toGoal = BlueCarouselAutonomous.ToGoalTraj(drive, startPos, slide, getPos);
+        final TrajectorySequence toGoal = BlueCarouselAutonomous.ToGoalTraj(drive, startPos, slide, getPos);
 
         final TrajectorySequence toSpinner = BlueCarouselAutonomous.ToSpinner(drive, toGoal.end(), slide);
 
@@ -59,7 +60,7 @@ public class BlueCarouselAutonomousWHPark extends WorldsAutonomousProgram {
 
         if (!isStopRequested()) {
 
-            drive.followTrajectory(toGoal);
+            drive.followTrajectorySequence(toGoal);
 
             this.dropOffItem(detectedPos);
 

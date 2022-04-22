@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.worlds.carou
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.src.drivePrograms.autonomous.worlds.WorldsAutonomousProgram;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @SuppressWarnings("unused")
 //@Config
+@Disabled
 @Autonomous(name = "🟥Red Carousel WH Park Autonomous🟥", group = "RedCarousel")
 public class RedCarouselAutonomousWHPark extends WorldsAutonomousProgram {
     static final Pose2d startPos = new Pose2d(-40, -65, Math.toRadians(0));
