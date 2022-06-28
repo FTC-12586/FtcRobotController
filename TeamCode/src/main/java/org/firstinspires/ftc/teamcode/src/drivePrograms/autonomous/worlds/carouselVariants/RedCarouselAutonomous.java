@@ -23,26 +23,19 @@ public class RedCarouselAutonomous extends WorldsAutonomousProgram {
     static final Pose2d dropOffPos = new Pose2d(-30, -24, Math.toRadians(180));
     static final Pose2d parkPos = new Pose2d(-60, -35.5, Math.toRadians(90));
     static final Pose2d carouselSpinPos = new Pose2d(-65, -54, Math.toRadians(270));
-
-    BarcodePositions detectedPos;
-
     public static double LraiseAmmount = 0.04;
     public static double HraiseAmmount = 0.04;
     public static double RraiseAmmount = 0.04;
-
     public static double crossOffsetX = 8;
-
     public static double vMax = 15;
-
     public static double aMax = 10;
-
-    public RedCarouselAutonomous() {
-        super(RevBlinkinLedDriver.BlinkinPattern.RED);
-    }
-
     public static double xAdjust = 0;
     public static double yAdjust = -0;
     public static double rotAdjust = -0;
+    BarcodePositions detectedPos;
+    public RedCarouselAutonomous() {
+        super(RevBlinkinLedDriver.BlinkinPattern.RED);
+    }
 
     public static TrajectorySequence ToSpinner(SampleMecanumDrive drive, Pose2d startPos, LinearSlide slide) {
         return drive.trajectorySequenceBuilder(startPos)

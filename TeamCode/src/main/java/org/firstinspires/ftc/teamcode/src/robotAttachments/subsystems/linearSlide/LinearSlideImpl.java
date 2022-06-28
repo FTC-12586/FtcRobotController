@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.util.RobotLog;
  */
 public class LinearSlideImpl implements LinearSlide {
 
+    private static final short slideTimeoutTime = 4; //In Seconds
     /**
      * The internal DcMotor object
      */
@@ -24,9 +25,6 @@ public class LinearSlideImpl implements LinearSlide {
     private HeightLevel currentLevel = HeightLevel.Down;
     private boolean dPadUpDepressed = true;
     private boolean dPadDownDepressed = true;
-
-    private static final short slideTimeoutTime = 4; //In Seconds
-
     private boolean autoMode;
 
     /**

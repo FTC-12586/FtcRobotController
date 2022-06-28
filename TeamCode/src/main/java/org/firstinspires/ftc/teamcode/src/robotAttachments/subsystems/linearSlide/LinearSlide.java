@@ -22,12 +22,12 @@ public interface LinearSlide extends Controllable<Void> {
 
     /**
      * Waits for the slide to get position
+     *
      * @throws InterruptedException If the OpMode is stopped while waiting
      */
     void waitOn() throws InterruptedException;
 
     /**
-     *
      * @return True if the slide is at it's targeted position
      */
     boolean isAtPosition();

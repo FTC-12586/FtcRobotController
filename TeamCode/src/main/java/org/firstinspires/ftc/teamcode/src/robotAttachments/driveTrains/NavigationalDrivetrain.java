@@ -449,7 +449,7 @@ public class NavigationalDrivetrain extends BasicDrivetrain {
      * @param tolerance The tolerance for how close the robot must get
      * @param warnings  A array of {@link MovementWarning} objects. If it throws, the exception is swallowed, the robot does not stop and this function returns
      */
-    public void moveTowardsPosition(double x, double y, double theta, final double power, double tolerance, MovementWarning[] warnings){
+    public void moveTowardsPosition(double x, double y, double theta, final double power, double tolerance, MovementWarning[] warnings) {
         try {
             this.moveTowardsPosition(x, y, theta, power, tolerance, (MovementException[]) warnings);
         } catch (MovementException ignored) {
@@ -465,7 +465,7 @@ public class NavigationalDrivetrain extends BasicDrivetrain {
      * @param power     The power to move at
      * @param tolerance The tolerance for how close the robot must get
      * @param error     An {@link MovementException} object. If it throws, the robot does not stop and the exception is propagated up the stack
-     * @throws MovementException    Throws if error throws
+     * @throws MovementException Throws if error throws
      */
     public void moveTowardsPosition(double x, double y, double theta, final double power, double tolerance, MovementException error) throws MovementException {
         this.moveTowardsPosition(x, y, theta, power, tolerance, new MovementException[]{error});

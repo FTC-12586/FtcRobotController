@@ -244,6 +244,7 @@ public abstract class GenericOpModeTemplate extends LinearOpMode {
 
     /**
      * Initializes the Outtake
+     *
      * @throws InterruptedException if stop is requested during this initialization
      */
     protected void initOuttake() throws InterruptedException {

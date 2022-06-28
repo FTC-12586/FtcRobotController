@@ -22,11 +22,8 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 public class BlueCarouselAutonomousDuck extends WorldsAutonomousProgram {
     final static Pose2d startPos = BlueCarouselAutonomous.startPos;
     final static Pose2d dropOffPos = BlueCarouselAutonomous.dropOffPos;
-
-    BarcodePositions detectedPos;
-
-
     final static Pose2d parkPos = new Pose2d(-60, 35.5, Math.toRadians(90));
+    BarcodePositions detectedPos;
 
     public BlueCarouselAutonomousDuck() {
         super(BlinkinPattern.BLUE);

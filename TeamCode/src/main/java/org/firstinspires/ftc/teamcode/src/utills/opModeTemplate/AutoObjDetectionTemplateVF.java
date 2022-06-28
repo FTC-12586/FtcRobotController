@@ -39,18 +39,15 @@ public abstract class AutoObjDetectionTemplateVF extends AutonomousTemplate {
      * A object to lock on to for the thread safety, used in _initTfod
      */
     private static final Lock TFOD_Lock = new ReentrantLock();
-
+    protected final String CameraNameToUse = GenericOpModeTemplate.LeftWebcamName;
     /**
      * vuforia object
      */
     public volatile VuforiaLocalizer vuforia;
-
     /**
      * Tensorflow Object Detection Object
      */
     public volatile TFObjectDetector tfod;
-
-    protected final String CameraNameToUse = GenericOpModeTemplate.LeftWebcamName;
 
     public static BarcodePositions findPositionOfMarker(TFObjectDetector tfod) {
         List<Recognition> recognitions = tfod.getRecognitions();

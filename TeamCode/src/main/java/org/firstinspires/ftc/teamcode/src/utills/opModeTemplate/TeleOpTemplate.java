@@ -14,16 +14,14 @@ import org.firstinspires.ftc.teamcode.src.robotAttachments.driveTrains.TeleopDri
 public abstract class TeleOpTemplate extends GenericOpModeTemplate {
 
     /**
-     * Provides methods for driving
-     */
-    protected TeleopDriveTrain driveTrain;
-
-    /**
      * Allows the control of the intake
      */
 
     public static final BlinkinPattern SpaceBarBlinkColor = BlinkinPattern.BLACK;
-
+    /**
+     * Provides methods for driving
+     */
+    protected TeleopDriveTrain driveTrain;
 
     /**
      * Initializes the objects provided by this class

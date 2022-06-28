@@ -35,11 +35,11 @@ public class TeleopDriveTrain extends BasicDrivetrain {
     /**
      * Constructs drive train from hardware map and motor names
      *
-     * @param hardwareMap The hardware map object from the OpMode class
-     * @param frontRight  The name of the front right motor
-     * @param frontLeft   The name of the front left motor
-     * @param backRight   The name of the back right motor
-     * @param backLeft    The name of the back left motor
+     * @param hardwareMap   The hardware map object from the OpMode class
+     * @param frontRight    The name of the front right motor
+     * @param frontLeft     The name of the front left motor
+     * @param backRight     The name of the back right motor
+     * @param backLeft      The name of the back left motor
      * @param driveEncoders If true, the motors are initialized with drive encoders on. If it is false, the drive encoders are left off
      */
     public TeleopDriveTrain(HardwareMap hardwareMap, String frontRight, String frontLeft, String backRight, String backLeft, boolean driveEncoders) {

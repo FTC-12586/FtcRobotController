@@ -24,22 +24,16 @@ public class BlueCarouselAutonomous extends WorldsAutonomousProgram {
     final static Pose2d dropOffPos = new Pose2d(-27, 23.5, Math.toRadians(180));
     final static Pose2d carouselSpinPos = new Pose2d(-61, 51, Math.toRadians(90));
     final static Pose2d parkPos = new Pose2d(-60, 35.5, Math.toRadians(90));
-
-    BarcodePositions detectedPos;
-
     public static double LraiseAmmount = 0.04;
     public static double HraiseAmmount = 0.04;
     public static double RraiseAmmount = 0.04;
-
     public static double crossOffsetX = 18;
-
     public static double vMax = 15;
-
     public static double aMax = 10;
-
     public static double xAdjust = 7;
     public static double yAdjust = 5;
     public static double rotAdjust = 0;
+    BarcodePositions detectedPos;
 
     public BlueCarouselAutonomous() {
         super(BlinkinPattern.BLUE);

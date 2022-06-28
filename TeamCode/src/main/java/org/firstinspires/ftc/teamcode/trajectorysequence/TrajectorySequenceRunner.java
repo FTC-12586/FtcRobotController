@@ -70,13 +70,6 @@ public class TrajectorySequenceRunner {
         dashboard.setTelemetryTransmissionInterval(25);
     }
 
-    public void followTrajectorySequenceAsync(TrajectorySequence trajectorySequence) {
-        currentTrajectorySequence = trajectorySequence;
-        currentSegmentStartTime = clock.seconds();
-        currentSegmentIndex = 0;
-        lastSegmentIndex = -1;
-    }
-
     /**
      * Gets the average error over all the paths
      *
@@ -111,6 +104,13 @@ public class TrajectorySequenceRunner {
      */
     public static double getTotalHeadingError() {
         return totalHError / 1000;
+    }
+
+    public void followTrajectorySequenceAsync(TrajectorySequence trajectorySequence) {
+        currentTrajectorySequence = trajectorySequence;
+        currentSegmentStartTime = clock.seconds();
+        currentSegmentIndex = 0;
+        lastSegmentIndex = -1;
     }
 
     public @Nullable

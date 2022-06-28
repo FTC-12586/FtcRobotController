@@ -81,6 +81,7 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
 
     /**
      * Parses out possible resolutions from a valid {@link OpenCvCameraException}
+     *
      * @param exception a valid {@link OpenCvCameraException}
      * @return An array of possible resolutions
      */
@@ -89,7 +90,7 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
 
         final String errorMessage = exception.getMessage();
 
-        assert (errorMessage!= null);
+        assert (errorMessage != null);
 
         //Trim off fluff
         String strSizes = errorMessage.substring(errorMessage.indexOf('['), errorMessage.lastIndexOf(']') + 1);
@@ -124,6 +125,7 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
 
     /**
      * Returns the largest resolution in terms of area from a array of possible resolutions
+     *
      * @param resolutions An array of possible resolutions
      * @return The largest resolution in terms of area from a array of possible resolutions
      */
@@ -147,6 +149,7 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
 
     /**
      * Checks a message from an {@link OpenCvCameraException} to see if it has suggested resolutions we can use
+     *
      * @param e An OpenCvCameraException object
      * @return true if it contains acceptable resolutions, false if no resolutions are found
      */
@@ -262,6 +265,7 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
 
     /**
      * Initializes OpenCV on a camera
+     *
      * @param CameraName The name of the camera to start OpenCV on
      * @throws InterruptedException Throws if the opMode is stopped during initialization
      */

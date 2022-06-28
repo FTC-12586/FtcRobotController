@@ -27,12 +27,14 @@ public interface Outtake extends Controllable<FreightFrenzyGameObject> {
 
     /**
      * Opens the outtake
-     *@throws InterruptedException Throws if stop is requested during this time
+     *
+     * @throws InterruptedException Throws if stop is requested during this time
      */
     void open() throws InterruptedException;
 
     /**
      * Closes the intake
+     *
      * @throws InterruptedException Throws if stop is requested during this time
      */
     void close() throws InterruptedException;

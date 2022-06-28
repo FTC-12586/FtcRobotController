@@ -77,6 +77,7 @@ public abstract class AutoVFTrackingTemplate extends AutoObjDetectionTemplateVF 
 
     /**
      * Initializes all fields provided by this class
+     *
      * @throws InterruptedException Throws if the opmode is stopped during initialization
      */
     @Override

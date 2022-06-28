@@ -39,6 +39,7 @@ public abstract class AutonomousTemplate extends GenericOpModeTemplate {
 
     /**
      * Overrides Linear Slide initialization from {@link GenericOpModeTemplate} with specific changes for autonomous programming
+     *
      * @throws InterruptedException If OpMode is stopped during Initialization
      */
     @Override

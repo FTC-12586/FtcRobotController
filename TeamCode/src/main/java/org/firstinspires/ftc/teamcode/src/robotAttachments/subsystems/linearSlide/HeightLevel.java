@@ -23,8 +23,8 @@ public enum HeightLevel {
 
     /**
      * Pass in the Height Level, returns the the position to go to in ticks
-     * @param level The Height Level to get the encoder count for
      *
+     * @param level The Height Level to get the encoder count for
      * @return The encoder count for a specific enum
      */
     public static int getEncoderCountFromEnum(HeightLevel level) {

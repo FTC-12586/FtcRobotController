@@ -72,16 +72,14 @@ public class SampleMecanumDrive extends MecanumDrive implements LocalizationAlgo
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
     public static double OMEGA_WEIGHT = 1;
+    public final BNO055IMU imu;
     private final TrajectorySequenceRunner trajectorySequenceRunner;
     private final TrajectoryFollower follower;
-
     private final DcMotorEx leftFront;
     private final DcMotorEx leftRear;
     private final DcMotorEx rightRear;
     private final DcMotorEx rightFront;
     private final List<DcMotorEx> motors;
-
-    public final BNO055IMU imu;
     private final VoltageSensor batteryVoltageSensor;
 
     public SampleMecanumDrive(HardwareMap hardwareMap) {
@@ -450,8 +448,7 @@ public class SampleMecanumDrive extends MecanumDrive implements LocalizationAlgo
     @Override
     public double[] getPos() {
         Pose2d cashe = this.getPoseEstimate();
-        double[] tmp = {cashe.getX(), cashe.getY(), cashe.getHeading()};
-        return tmp;
+        return new double[]{cashe.getX(), cashe.getY(), cashe.getHeading()};
     }
 
     @Override

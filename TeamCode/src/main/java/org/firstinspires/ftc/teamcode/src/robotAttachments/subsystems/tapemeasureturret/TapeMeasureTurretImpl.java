@@ -18,10 +18,11 @@ public class TapeMeasureTurretImpl implements TapeMeasureTurret {
 
     /**
      * Constructs the TapeMeasureTurret object
-     * @param hardwareMap AN Opmode Hardware map
+     *
+     * @param hardwareMap          AN Opmode Hardware map
      * @param tapeMeasureServoName Name of the tape measure servo
-     * @param pitchServoName Name of the Pitch Servo
-     * @param yawServoName Name of the Yaw Servo
+     * @param pitchServoName       Name of the Pitch Servo
+     * @param yawServoName         Name of the Yaw Servo
      */
     public TapeMeasureTurretImpl(HardwareMap hardwareMap, String tapeMeasureServoName, String pitchServoName, String yawServoName) {
         this.tapeMeasure = hardwareMap.crservo.get(tapeMeasureServoName);

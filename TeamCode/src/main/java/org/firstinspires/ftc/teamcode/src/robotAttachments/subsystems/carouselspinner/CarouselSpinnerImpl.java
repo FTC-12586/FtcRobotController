@@ -51,7 +51,7 @@ public class CarouselSpinnerImpl implements CarouselSpinner {
      *
      * @param hardwareMap Hardware Map Object
      * @param spinnerOne  Name of continuous servo
-     *@param spinnerTwo  Name of continuous servo
+     * @param spinnerTwo  Name of continuous servo
      */
     public CarouselSpinnerImpl(HardwareMap hardwareMap, String spinnerOne, String spinnerTwo) {
         leftServo = hardwareMap.crservo.get(spinnerOne);

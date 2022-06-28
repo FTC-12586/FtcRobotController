@@ -228,6 +228,7 @@ public class ContourPipeline extends OpenCvPipeline {
 
     /**
      * Gets the height of {@link ContourPipeline#maxRect}
+     *
      * @return the height of {@link ContourPipeline#maxRect}
      */
     public int getRectHeight() {
@@ -238,6 +239,7 @@ public class ContourPipeline extends OpenCvPipeline {
 
     /**
      * Gets the width of {@link ContourPipeline#maxRect}
+     *
      * @return the width of {@link ContourPipeline#maxRect}
      */
     public int getRectWidth() {
@@ -248,6 +250,7 @@ public class ContourPipeline extends OpenCvPipeline {
 
     /**
      * Gets the x position of {@link ContourPipeline#maxRect}
+     *
      * @return the x position of {@link ContourPipeline#maxRect}
      */
     public int getRectX() {
@@ -258,6 +261,7 @@ public class ContourPipeline extends OpenCvPipeline {
 
     /**
      * Gets the y position of {@link ContourPipeline#maxRect}
+     *
      * @return the y position of {@link ContourPipeline#maxRect}
      */
     public int getRectY() {
@@ -268,6 +272,7 @@ public class ContourPipeline extends OpenCvPipeline {
 
     /**
      * Gets the center x position of {@link ContourPipeline#maxRect}
+     *
      * @return the center x position of {@link ContourPipeline#maxRect}
      */
     public double getRectMidpointX() {
@@ -278,6 +283,7 @@ public class ContourPipeline extends OpenCvPipeline {
 
     /**
      * Gets the center y position of {@link ContourPipeline#maxRect}
+     *
      * @return the center y position of {@link ContourPipeline#maxRect}
      */
     public double getRectMidpointY() {
@@ -288,6 +294,7 @@ public class ContourPipeline extends OpenCvPipeline {
 
     /**
      * Gets the center point of {@link ContourPipeline#maxRect}
+     *
      * @return the center point of {@link ContourPipeline#maxRect}
      */
     public Point getRectMidpointXY() {
@@ -298,6 +305,7 @@ public class ContourPipeline extends OpenCvPipeline {
 
     /**
      * Gets the aspect ratio of {@link ContourPipeline#maxRect}
+     *
      * @return the aspect ratio of {@link ContourPipeline#maxRect}
      */
     public double getAspectRatio() {
@@ -308,6 +316,7 @@ public class ContourPipeline extends OpenCvPipeline {
 
     /**
      * Gets the area of {@link ContourPipeline#maxRect}
+     *
      * @return the area of {@link ContourPipeline#maxRect}
      */
     public double getRectArea() {
