@@ -5,6 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.src.utills.opModeTemplate.GenericOpModeTemplate;
 
+/**
+ * A basic OpMode to test the pod servos
+ */
 @TeleOp(name = "Odometry Test")
 @Disabled
 public class OdometryTest extends GenericOpModeTemplate {

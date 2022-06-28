@@ -7,6 +7,9 @@ import org.firstinspires.ftc.teamcode.src.robotAttachments.sensors.RobotVoltageS
 import org.firstinspires.ftc.teamcode.src.utills.Executable;
 import org.firstinspires.ftc.teamcode.src.utills.MiscUtils;
 
+/**
+ * Throws itself if the voltage drops suddenly
+ */
 public class VoltageDropWarning extends MovementWarning {
     private final double dropAmount;
     private Double initialVoltage = null;

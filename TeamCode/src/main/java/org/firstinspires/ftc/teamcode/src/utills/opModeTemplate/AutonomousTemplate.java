@@ -37,6 +37,10 @@ public abstract class AutonomousTemplate extends GenericOpModeTemplate {
         RobotLog.d("Robot Init Finished");
     }
 
+    /**
+     * Overrides Linear Slide initialization from {@link GenericOpModeTemplate} with specific changes for autonomous programming
+     * @throws InterruptedException If OpMode is stopped during Initialization
+     */
     @Override
     protected void initLinearSlide() throws InterruptedException {
         super.initLinearSlide();

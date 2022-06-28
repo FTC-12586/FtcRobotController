@@ -19,8 +19,8 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * A class to do position triangulation based on dead wheel odometry and the BNO055IMU
  *
- * @author Sarthak
- * @since 6/1/2019
+ * @author Sarthak, Mosier
+ * @since 2/7/2022
  */
 public class IMUOdometry extends ThreadedSubsystemTemplate implements Odometry {
     /**

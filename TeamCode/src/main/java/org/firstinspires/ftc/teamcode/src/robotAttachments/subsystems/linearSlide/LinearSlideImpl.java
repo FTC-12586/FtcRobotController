@@ -46,20 +46,12 @@ public class LinearSlideImpl implements LinearSlide {
         autoMode = true;
     }
 
-    /**
-     * Sets the linear slide to go to the provided position
-     *
-     * @param targetPosition The position to go to in ticks
-     */
+
     public void setTargetPosition(int targetPosition) {
         linearSlide.setTargetPosition(targetPosition);
     }
 
-    /**
-     * Sets the slide to go to the provided level
-     *
-     * @param level The level to go to
-     */
+
     public void setTargetLevel(HeightLevel level) {
         linearSlide.setTargetPosition(HeightLevel.getEncoderCountFromEnum(level));
     }

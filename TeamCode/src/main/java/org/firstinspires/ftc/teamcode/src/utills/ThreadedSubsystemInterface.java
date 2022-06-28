@@ -1,14 +1,14 @@
 package org.firstinspires.ftc.teamcode.src.utills;
 
 /**
- * This is a template for all subsystems that need threading, provides thread safety
+ * This is a template for all subsystems that need threading, provides basic thread safety
  */
 public interface ThreadedSubsystemInterface extends Runnable {
 
     /**
      * It is the main function of the thread
      *
-     * @throws InterruptedException Throws if the thread is interupted
+     * @throws InterruptedException Throws if the thread is interrupted
      */
     void threadMain() throws InterruptedException;
 

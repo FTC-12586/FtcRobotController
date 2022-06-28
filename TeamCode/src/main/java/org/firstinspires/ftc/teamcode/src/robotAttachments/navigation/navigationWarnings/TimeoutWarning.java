@@ -9,6 +9,9 @@ import org.firstinspires.ftc.teamcode.src.robotAttachments.sensors.RobotVoltageS
 import org.firstinspires.ftc.teamcode.src.utills.Executable;
 import org.firstinspires.ftc.teamcode.src.utills.MiscUtils;
 
+/**
+ * Throws if the movement times out
+ */
 public class TimeoutWarning extends MovementWarning {
 
     final ElapsedTime t;

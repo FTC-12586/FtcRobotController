@@ -40,6 +40,9 @@ import org.openftc.easyopencv.OpenCvSwitchableWebcam;
 
 import java.util.Locale;
 
+/**
+ * An example autonomous that uses a switchable webcam for OpenCV
+ */
 @Disabled
 @TeleOp(name = "SwitchableWebcamExample")
 public class SwitchableWebcamExample extends LinearOpMode {
@@ -109,7 +112,10 @@ public class SwitchableWebcamExample extends LinearOpMode {
         }
     }
 
-    static class SamplePipeline extends OpenCvPipeline {
+    /**
+     * A simple class to do some mockup image processing
+     */
+    private static class SamplePipeline extends OpenCvPipeline {
         @Override
         public Mat processFrame(Mat input) {
             Imgproc.rectangle(

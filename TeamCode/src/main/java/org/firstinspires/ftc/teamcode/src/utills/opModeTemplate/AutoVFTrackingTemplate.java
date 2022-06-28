@@ -20,6 +20,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A template for initializing an OpMode with Vuforia image tracking
+ */
 @SuppressWarnings("unused")
 public abstract class AutoVFTrackingTemplate extends AutoObjDetectionTemplateVF {
     private static final float mmPerInch = 25.4f;
@@ -72,12 +75,19 @@ public abstract class AutoVFTrackingTemplate extends AutoObjDetectionTemplateVF 
     private VuforiaTrackables targets = null;
     private SwitchableCamera switchableCamera;
 
+    /**
+     * Initializes all fields provided by this class
+     * @throws InterruptedException Throws if the opmode is stopped during initialization
+     */
     @Override
     public void initAll() throws InterruptedException {
         super.initAll();
         this.changeToLeftCamera();
     }
 
+    /**
+     * Initializes Vuforia
+     */
     @Override
     public void initVuforia() {
         telemetry.addData("Initialization", "Beginning Vuforia Initialization");
@@ -154,6 +164,9 @@ public abstract class AutoVFTrackingTemplate extends AutoObjDetectionTemplateVF 
         targets.activate();
     }
 
+    /**
+     * Changes to left camera
+     */
     public void changeToLeftCamera() {
         switchableCamera.setActiveCamera(leftCam);
         for (VuforiaTrackable trackable : allTrackables) {
@@ -163,6 +176,9 @@ public abstract class AutoVFTrackingTemplate extends AutoObjDetectionTemplateVF 
         usingLeftCamera = true;
     }
 
+    /**
+     * Changes to right camera
+     */
     public void changeToRightCamera() {
         switchableCamera.setActiveCamera(rightCam);
         for (VuforiaTrackable trackable : allTrackables) {
@@ -172,11 +188,17 @@ public abstract class AutoVFTrackingTemplate extends AutoObjDetectionTemplateVF 
         usingLeftCamera = false;
     }
 
+    /**
+     * Deactivates all cameras and the TFOD engine
+     */
     public void deactivateAll() {
         targets.deactivate();
         tfod.deactivate();
     }
 
+    /**
+     * Switches between right and left camera
+     */
     public void switchCamera() {
         if (usingLeftCamera) { //switch to right cam
             changeToRightCamera();

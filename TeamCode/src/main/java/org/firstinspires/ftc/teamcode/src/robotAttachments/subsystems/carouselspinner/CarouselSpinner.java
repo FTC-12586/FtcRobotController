@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.carousels
 
 import org.firstinspires.ftc.teamcode.src.utills.Controllable;
 
+/**
+ * Carousel spinner interface
+ */
 public interface CarouselSpinner extends Controllable<Void> {
 
     /**

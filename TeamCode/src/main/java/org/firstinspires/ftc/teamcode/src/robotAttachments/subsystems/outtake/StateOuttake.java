@@ -14,6 +14,9 @@ import org.firstinspires.ftc.teamcode.src.utills.enums.FreightFrenzyGameObject;
 import org.firstinspires.ftc.teamcode.src.utills.enums.FreightFrenzyStateObject;
 import org.firstinspires.ftc.teamcode.src.utills.enums.RGBCameraColors;
 
+/**
+ * This outake is the finger based outtake that Declan did
+ */
 public class StateOuttake implements Outtake {
     /**
      * The Position servo must be to release an item
@@ -35,6 +38,14 @@ public class StateOuttake implements Outtake {
     boolean y_depressed2 = true;
     private boolean isClosed;
 
+    /**
+     * Initializes from hardware map and names
+     *
+     * @param hardwareMap          hardware map object
+     * @param servoName            Name of finger servo
+     * @param colorSensor          name of the color sensor
+     * @param sensorDetectionLight true if the light should be on, false if the light should be off
+     */
     public StateOuttake(HardwareMap hardwareMap, String colorSensor, String servoName, boolean sensorDetectionLight) {
         this.colorSensor = hardwareMap.colorSensor.get(colorSensor);
         this.colorSensor.enableLed(sensorDetectionLight);
@@ -45,6 +56,13 @@ public class StateOuttake implements Outtake {
         isClosed = true;
     }
 
+    /**
+     * Controls the {@link StateOuttake}
+     *
+     * @param gamepad1 The first gamepad
+     * @param gamepad2 The second gamepad
+     * @return The {@link FreightFrenzyGameObject} that is stored in the bucket
+     */
     @Nullable
     @Override
     public FreightFrenzyGameObject gamepadControl(@NonNull Gamepad gamepad1, @NonNull Gamepad gamepad2) {
@@ -97,11 +115,17 @@ public class StateOuttake implements Outtake {
         isClosed = true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void goTo(double pos) {
         this.itemRelease.setPosition(pos);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getColor(RGBCameraColors color) {
         switch (color) {
@@ -146,13 +170,12 @@ public class StateOuttake implements Outtake {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean itemInBucket() {
-        switch (this.identifyContents()) {
-            case EMPTY:
-                return false;
-        }
-        return true;
+        return this.identifyContents() != FreightFrenzyGameObject.EMPTY;
     }
 
 

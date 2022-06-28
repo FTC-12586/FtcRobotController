@@ -16,7 +16,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 /**
- * A template for all Autonomous opModes that use Vision, allows easy initialization
+ * A template for all Autonomous opModes that use OpenCV Vision, allows easy initialization
  */
 @SuppressWarnings("unused")
 @Disabled
@@ -44,6 +44,9 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
 
     private OpenCvWebcam webcam;
 
+    /**
+     * Constructs an anonymous listener
+     */
     private final OpenCvCamera.AsyncCameraOpenListener defaultListener = new OpenCvCamera.AsyncCameraOpenListener() {
         @Override
         public void onOpened() {
@@ -51,17 +54,20 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
                 //Trying to open camera at given resolution
                 webcam.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT);
             } catch (final OpenCvCameraException e) {
-                //Fallback code if the camera fails to open
-                //The reason this is here is because sometimes the camera will fail to open randomly
-                //Even though the camera actually supports the given resolution
-                final String message = e.getMessage();
+                /*
+                Fallback code if the camera fails to open.
+                Sometimes the camera will fail to open even though the camera actually supports the given resolution
+                However, the error message suggests alternative resolutions that will work
+                 */
 
-                if (isValid(message)) {
+                if (isRecoverable(e)) {
                     //If we are here, we can possibly recover
-                    final int[] newRes = getLargestResolution(getResolutionsFromErrorMessage(message));
+                    assert (e.getMessage() != null);
+                    final int[] newRes = getLargestResolution(getResolutionsFromException(e));
                     webcam.startStreaming(newRes[0], newRes[1], OpenCvCameraRotation.UPRIGHT);
                     RobotLog.addGlobalWarningMessage("Camera failed to open because of resolution error, but recovered");
                 } else {
+                    //The message returned no resolutions we can use, throw the exception up the stack
                     throw e;
                 }
             }
@@ -73,8 +79,17 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
         }
     };
 
+    /**
+     * Parses out possible resolutions from a valid {@link OpenCvCameraException}
+     * @param exception a valid {@link OpenCvCameraException}
+     * @return An array of possible resolutions
+     */
     @SuppressLint("NewApi")
-    private static int[][] getResolutionsFromErrorMessage(final String errorMessage) {
+    private static int[][] getResolutionsFromException(final OpenCvCameraException exception) {
+
+        final String errorMessage = exception.getMessage();
+
+        assert (errorMessage!= null);
 
         //Trim off fluff
         String strSizes = errorMessage.substring(errorMessage.indexOf('['), errorMessage.lastIndexOf(']') + 1);
@@ -107,6 +122,11 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
         return returnContainer;
     }
 
+    /**
+     * Returns the largest resolution in terms of area from a array of possible resolutions
+     * @param resolutions An array of possible resolutions
+     * @return The largest resolution in terms of area from a array of possible resolutions
+     */
     private static int[] getLargestResolution(final int[][] resolutions) {
         long maxSize = 0;
         int maxIndex = -1;
@@ -125,7 +145,15 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
 
     }
 
-    private static boolean isValid(String message) {
+    /**
+     * Checks a message from an {@link OpenCvCameraException} to see if it has suggested resolutions we can use
+     * @param e An OpenCvCameraException object
+     * @return true if it contains acceptable resolutions, false if no resolutions are found
+     */
+    private static boolean isRecoverable(OpenCvCameraException e) {
+
+        final String message = e.getMessage();
+
         //null check
         if (message == null) {
             return false;
@@ -141,6 +169,7 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
     /**
      * Initializes all fields provided by this class
      *
+     * @param DefaultCameraName The name the OpMode should initialize with by default
      * @throws InterruptedException Throws if OpMode is stopped during execution
      */
     public void initAll(String DefaultCameraName) throws InterruptedException {
@@ -231,6 +260,11 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
         return BarcodePositions.NotSeen;
     }
 
+    /**
+     * Initializes OpenCV on a camera
+     * @param CameraName The name of the camera to start OpenCV on
+     * @throws InterruptedException Throws if the opMode is stopped during initialization
+     */
     public void initOpenCV(String CameraName) throws InterruptedException {
         RobotLog.d("OpenCV Init Started");
 
@@ -259,20 +293,23 @@ public abstract class AutoObjDetectionTemplateCV extends AutonomousTemplate {
 
     }
 
+    /**
+     * Closes the webcam and logs it in the Logcat
+     */
     protected void closeWebcam() {
-
         if (webcam != null) {
             webcam.closeCameraDeviceAsync(() -> RobotLog.dd("Webcam Image Processor", "Closed"));
             webcam = null;
         }
     }
 
+    /**
+     * Cleans up the OpMode
+     */
     @Override
     protected void cleanup() {
         super.cleanup();
-        if (webcam != null) {
-            webcam.closeCameraDeviceAsync(() -> RobotLog.dd("Webcam Image Processor", "Closed"));
-        }
+        closeWebcam();
     }
 
 }

@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.src.utills.enums.FreightFrenzyGameObject;
 import org.firstinspires.ftc.teamcode.src.utills.enums.RGBCameraColors;
 
 /**
- * this is the class for our robot's intake subsystem
+ * this is the class for our robot's intake subsystem, It is the flippy intake Eli Tried
  */
 public class OuttakeMk1 implements Outtake {
 
@@ -122,6 +122,9 @@ public class OuttakeMk1 implements Outtake {
         isClosed = true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void goTo(double pos) {
         itemRelease.setPosition(pos);
         isClosed = false;
@@ -208,7 +211,6 @@ public class OuttakeMk1 implements Outtake {
             } else {
                 this.close();
             }
-            currentObject = FreightFrenzyGameObject.EMPTY;
         }
 
         if (!gamepad2.b) {
@@ -222,7 +224,6 @@ public class OuttakeMk1 implements Outtake {
             } else {
                 this.close();
             }
-            currentObject = FreightFrenzyGameObject.EMPTY;
         }
 
         if (!gamepad2.a) {
@@ -236,7 +237,6 @@ public class OuttakeMk1 implements Outtake {
             } else {
                 this.close();
             }
-            currentObject = FreightFrenzyGameObject.EMPTY;
         }
 
 
@@ -250,6 +250,9 @@ public class OuttakeMk1 implements Outtake {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void halt() {
 
     }

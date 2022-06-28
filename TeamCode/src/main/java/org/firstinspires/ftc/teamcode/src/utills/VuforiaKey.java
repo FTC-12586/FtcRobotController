@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.src.utills;
 
+/**
+ * A simple class to hold our Vuforia Key.
+ */
 public class VuforiaKey {
     /**
      * The Vuforia licence Key

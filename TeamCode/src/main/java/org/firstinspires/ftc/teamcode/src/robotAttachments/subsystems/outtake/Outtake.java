@@ -6,6 +6,9 @@ import org.firstinspires.ftc.teamcode.src.utills.Controllable;
 import org.firstinspires.ftc.teamcode.src.utills.enums.FreightFrenzyGameObject;
 import org.firstinspires.ftc.teamcode.src.utills.enums.RGBCameraColors;
 
+/**
+ * An interface for all Outtakes to follow
+ */
 public interface Outtake extends Controllable<FreightFrenzyGameObject> {
     /**
      * Identifies the contents in the bucket
@@ -24,11 +27,13 @@ public interface Outtake extends Controllable<FreightFrenzyGameObject> {
 
     /**
      * Opens the outtake
+     *@throws InterruptedException Throws if stop is requested during this time
      */
     void open() throws InterruptedException;
 
     /**
      * Closes the intake
+     * @throws InterruptedException Throws if stop is requested during this time
      */
     void close() throws InterruptedException;
 

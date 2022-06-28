@@ -14,13 +14,27 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-// Credits to team 7303 RoboAvatars, adjusted by team 3954 Pink to the Future, modified by 12586
+// Credits to team 7303 RoboAvatars, adjusted by team 3954 Pink to the Future
 
+/**
+ * A {@link OpenCvPipeline} that is used to detect color between two ranges.
+ */
 public class DuckPipeline extends OpenCvPipeline {
     // Pink, the default color                         Y      Cr     Cb    (Do not change Y)
     public static Scalar scalarLowerYCrCb = new Scalar(12, 115, 79);
     public static Scalar scalarUpperYCrCb = new Scalar(34, 255, 255);
     final Scalar HOT_PINK = new Scalar(196, 23, 112);
+
+    // Yellow, freight or ducks!
+    //public static Scalar scalarLowerYCrCb = new Scalar(0.0, 100.0, 0.0);
+    //public static Scalar scalarUpperYCrCb = new Scalar(255.0, 170.0, 120.0);
+
+    // Green                                             Y      Cr     Cb
+    // public static Scalar scalarLowerYCrCb = new Scalar(  0.0, 0.0, 0.0);
+    // public static Scalar scalarUpperYCrCb = new Scalar(255.0, 120.0, 120.0);
+
+    // Use this picture for you own color https://github.com/PinkToTheFuture/OpenCV_FreightFrenzy_2021-2022/blob/main/YCbCr.jpeg
+    // Note that the Cr and Cb values range between 0-255. this means that the origin of the coordinate system is (128,128)
     private final Mat mat = new Mat();
     private final Mat processed = new Mat();
     private final Object sync = new Object();
@@ -35,10 +49,21 @@ public class DuckPipeline extends OpenCvPipeline {
     private int CAMERA_HEIGHT;
     private int loopCounter = 0;
     private int pLoopCounter = 0;
+    /**
+     * maxRect is the bounding box surrounding the largest contiguous blob of detected color within the image frame
+     */
     private Rect maxRect = new Rect(600, 1, 1, 1);
     private double maxArea = 0;
     private boolean first = false;
 
+    /**
+     * Constructs object and sets the area within the camera frame to use
+     *
+     * @param borderLeftX   The left border position (pixels)
+     * @param borderRightX  The Right border position (pixels)
+     * @param borderTopY    The top border position (pixels)
+     * @param borderBottomY The bottom border position (pixels)
+     */
     public DuckPipeline(double borderLeftX, double borderRightX, double borderTopY, double borderBottomY) {
         this.borderLeftX = borderLeftX;
         this.borderRightX = borderRightX;
@@ -46,22 +71,58 @@ public class DuckPipeline extends OpenCvPipeline {
         this.borderBottomY = borderBottomY;
     }
 
+    /**
+     * Sets the lower bound for color detection
+     *
+     * @param y  Y value in the y-cr-cb color space
+     * @param cr cr value in the y-cr-cb color space
+     * @param cb cb value in the y-cr-cb color space
+     */
     public void configureScalarLower(double y, double cr, double cb) {
         scalarLowerYCrCb = new Scalar(y, cr, cb);
     }
 
+    /**
+     * Sets the upper bound for color detection
+     *
+     * @param y  Y value in the y-cr-cb color space
+     * @param cr cr value in the y-cr-cb color space
+     * @param cb cb value in the y-cr-cb color space
+     */
     public void configureScalarUpper(double y, double cr, double cb) {
         scalarUpperYCrCb = new Scalar(y, cr, cb);
     }
 
+    /**
+     * Sets the lower bound for color detection
+     *
+     * @param y  Y value in the y-cr-cb color space
+     * @param cr cr value in the y-cr-cb color space
+     * @param cb cb value in the y-cr-cb color space
+     */
     public void configureScalarLower(int y, int cr, int cb) {
         scalarLowerYCrCb = new Scalar(y, cr, cb);
     }
 
+    /**
+     * Sets the upper bound for color detection
+     *
+     * @param y  Y value in the y-cr-cb color space
+     * @param cr cr value in the y-cr-cb color space
+     * @param cb cb value in the y-cr-cb color space
+     */
     public void configureScalarUpper(int y, int cr, int cb) {
         scalarUpperYCrCb = new Scalar(y, cr, cb);
     }
 
+    /**
+     * Sets the area within the camera frame to use
+     *
+     * @param borderLeftX   The left border position (pixels)
+     * @param borderRightX  The Right border position (pixels)
+     * @param borderTopY    The top border position (pixels)
+     * @param borderBottomY The bottom border position (pixels)
+     */
     public void configureBorders(double borderLeftX, double borderRightX, double borderTopY, double borderBottomY) {
         this.borderLeftX = borderLeftX;
         this.borderRightX = borderRightX;
@@ -69,6 +130,12 @@ public class DuckPipeline extends OpenCvPipeline {
         this.borderBottomY = borderBottomY;
     }
 
+    /**
+     * Processes a image frame
+     *
+     * @param input The image frame to process
+     * @return A processed image frame
+     */
     @Override
     public Mat processFrame(Mat input) {
         CAMERA_WIDTH = input.width();
@@ -152,60 +219,97 @@ public class DuckPipeline extends OpenCvPipeline {
         }
         return input;
     }
+
     /*
     Synchronize these operations as the user code could be incorrect otherwise, i.e a property is read
     while the same rectangle is being processed in the pipeline, leading to some values being not
     synced.
      */
 
+    /**
+     * Gets the height of {@link DuckPipeline#maxRect}
+     * @return the height of {@link DuckPipeline#maxRect}
+     */
     public int getRectHeight() {
         synchronized (sync) {
             return maxRect.height;
         }
     }
 
+    /**
+     * Gets the width of {@link DuckPipeline#maxRect}
+     * @return the width of {@link DuckPipeline#maxRect}
+     */
     public int getRectWidth() {
         synchronized (sync) {
             return maxRect.width;
         }
     }
 
+    /**
+     * Gets the x position of {@link DuckPipeline#maxRect}
+     * @return the x position of {@link DuckPipeline#maxRect}
+     */
     public int getRectX() {
         synchronized (sync) {
             return maxRect.x;
         }
     }
 
+    /**
+     * Gets the y position of {@link DuckPipeline#maxRect}
+     * @return the y position of {@link DuckPipeline#maxRect}
+     */
     public int getRectY() {
         synchronized (sync) {
             return maxRect.y;
         }
     }
 
+    /**
+     * Gets the center x position of {@link DuckPipeline#maxRect}
+     * @return the center x position of {@link DuckPipeline#maxRect}
+     */
     public double getRectMidpointX() {
         synchronized (sync) {
             return getRectX() + (getRectWidth() / 2.0);
         }
     }
 
+    /**
+     * Gets the center y position of {@link DuckPipeline#maxRect}
+     * @return the center y position of {@link DuckPipeline#maxRect}
+     */
     public double getRectMidpointY() {
         synchronized (sync) {
             return getRectY() + (getRectHeight() / 2.0);
         }
     }
 
+    /**
+     * Gets the center point of {@link DuckPipeline#maxRect}
+     * @return the center point of {@link DuckPipeline#maxRect}
+     */
     public Point getRectMidpointXY() {
         synchronized (sync) {
             return new Point(getRectMidpointX(), getRectMidpointY());
         }
     }
 
+    /**
+     * Gets the aspect ratio of {@link DuckPipeline#maxRect}
+     * @return the aspect ratio of {@link DuckPipeline#maxRect}
+     */
     public double getAspectRatio() {
         synchronized (sync) {
             return getRectArea() / (CAMERA_HEIGHT * CAMERA_WIDTH);
         }
     }
 
+    /**
+     * Gets the area of {@link DuckPipeline#maxRect}
+     * @return the area of {@link DuckPipeline#maxRect}
+     */
     public double getRectArea() {
         synchronized (sync) {
             return maxRect.area();

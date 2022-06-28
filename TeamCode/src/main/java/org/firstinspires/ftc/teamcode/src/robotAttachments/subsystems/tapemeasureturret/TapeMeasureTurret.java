@@ -2,5 +2,8 @@ package org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.tapemeasu
 
 import org.firstinspires.ftc.teamcode.src.utills.Controllable;
 
+/**
+ * Interface for TapeMeasureTurret
+ */
 public interface TapeMeasureTurret extends Controllable<Void> {
 }

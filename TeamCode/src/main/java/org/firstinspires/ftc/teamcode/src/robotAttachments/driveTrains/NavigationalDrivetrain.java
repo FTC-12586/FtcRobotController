@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.src.utills.MiscUtils;
 
 /**
  * NavigationalDrivetrain implements more advanced drive functions that can be inherited by other drive systems.
+ * It can be passed an {@link org.firstinspires.ftc.teamcode.src.robotAttachments.navigation.LocalizationAlgorithm} to use for determining it's position
  */
 public class NavigationalDrivetrain extends BasicDrivetrain {
 
@@ -36,20 +37,6 @@ public class NavigationalDrivetrain extends BasicDrivetrain {
      * Internal Telemetry Object, allows debug information
      */
     private final Telemetry telemetry;
-    /**
-     * accelerationDistance controls the distance (in inches) that the robot uses to accelerate to maximum speed
-     */
-    private final double accelerationDistance = 10.0D;
-
-    /**
-     * decelerationDistance controls the distance (in inches) that the robot uses to decelerate from maximum speed
-     */
-    private final double decelerationDistance = 20.0D;
-
-    /**
-     * normalVoltage is the voltage the robot is expected to operate at. If the voltage goes lower, the power returned is higher to compensate and visa versa
-     */
-    private final double normalVoltage = 12.0D;
 
     /**
      * A internal variable to control debug printing, true for on, false for off
@@ -303,7 +290,7 @@ public class NavigationalDrivetrain extends BasicDrivetrain {
      * @param theta     The angle (relative to the field) to turn to during the movement
      * @param errors    A array of error conditions to check. Must be of type {@link MovementException}
      * @throws InterruptedException Throws if the OpMode ends during execution
-     * @throws MovementException    Stops Motors and Throws if errorCB returns true
+     * @throws MovementException    Stops Motors and Throws if error callbacks returns true
      */
     public void moveToPosition(double x, double y, double theta, double tolerance, MovementException[] errors) throws InterruptedException, MovementException {
         double power;
@@ -343,7 +330,7 @@ public class NavigationalDrivetrain extends BasicDrivetrain {
                 telemetry.addData("Moving to", coordinateString);
                 telemetry.addData("currentDistance", currentDistance);
                 telemetry.addData("angle", currentAngle);
-                telemetry.addData("Moving?", (currentDistance > tolerance && !isStopRequested() && opModeIsActive()));
+                telemetry.addData("Moving?", (!isStopRequested() && opModeIsActive()));
                 telemetry.addData("X Pos", currentX);
                 telemetry.addData("Y Pos", currentY);
                 telemetry.addData("Power", power);
@@ -444,9 +431,8 @@ public class NavigationalDrivetrain extends BasicDrivetrain {
      * @param power     The power to move at
      * @param tolerance The tolerance for how close the robot must get
      * @param warning   A {@link MovementWarning} object. If it throws, the exception is swallowed, the robot does not stop and this function returns
-     * @throws InterruptedException Throws if the OpMode ends during execution
      */
-    public void moveTowardsPosition(double x, double y, double theta, final double power, double tolerance, MovementWarning warning) throws InterruptedException {
+    public void moveTowardsPosition(double x, double y, double theta, final double power, double tolerance, MovementWarning warning) {
         try {
             this.moveTowardsPosition(x, y, theta, power, tolerance, new MovementException[]{warning});
         } catch (MovementException ignored) {
@@ -462,9 +448,8 @@ public class NavigationalDrivetrain extends BasicDrivetrain {
      * @param power     The power to move at
      * @param tolerance The tolerance for how close the robot must get
      * @param warnings  A array of {@link MovementWarning} objects. If it throws, the exception is swallowed, the robot does not stop and this function returns
-     * @throws InterruptedException Throws if the OpMode ends during execution
      */
-    public void moveTowardsPosition(double x, double y, double theta, final double power, double tolerance, MovementWarning[] warnings) throws InterruptedException {
+    public void moveTowardsPosition(double x, double y, double theta, final double power, double tolerance, MovementWarning[] warnings){
         try {
             this.moveTowardsPosition(x, y, theta, power, tolerance, (MovementException[]) warnings);
         } catch (MovementException ignored) {
@@ -480,10 +465,9 @@ public class NavigationalDrivetrain extends BasicDrivetrain {
      * @param power     The power to move at
      * @param tolerance The tolerance for how close the robot must get
      * @param error     An {@link MovementException} object. If it throws, the robot does not stop and the exception is propagated up the stack
-     * @throws InterruptedException Throws if the OpMode ends during execution
      * @throws MovementException    Throws if error throws
      */
-    public void moveTowardsPosition(double x, double y, double theta, final double power, double tolerance, MovementException error) throws InterruptedException, MovementException {
+    public void moveTowardsPosition(double x, double y, double theta, final double power, double tolerance, MovementException error) throws MovementException {
         this.moveTowardsPosition(x, y, theta, power, tolerance, new MovementException[]{error});
     }
 
@@ -517,7 +501,7 @@ public class NavigationalDrivetrain extends BasicDrivetrain {
                 telemetry.addData("Moving to", coordinateString);
                 telemetry.addData("currentDistance", currentDistance);
                 telemetry.addData("angle", currentAngle);
-                telemetry.addData("Moving?", (currentDistance > tolerance && !isStopRequested() && opModeIsActive()));
+                telemetry.addData("Moving?", (!isStopRequested() && opModeIsActive()));
                 telemetry.addData("X Pos", currentX);
                 telemetry.addData("Y Pos", currentY);
                 telemetry.addData("Power", power);

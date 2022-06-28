@@ -66,7 +66,7 @@ public class OdometryServosImpl implements OdometryServos {
     }
 
     /**
-     * Lowers the Odometry pods
+     * {@inheritDoc}
      */
     public void lower() {
         horizontalServo.setPosition(horizontalServoLowerPosition);
@@ -75,7 +75,7 @@ public class OdometryServosImpl implements OdometryServos {
     }
 
     /**
-     * Raises the odometry pods
+     * {@inheritDoc}
      */
     public void raise() {
         horizontalServo.setPosition(horizontalServoRaisePosition);

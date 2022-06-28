@@ -13,6 +13,9 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
+/**
+ * A simple test of  {@link DuckPipeline}
+ */
 @Disabled
 @Autonomous(name = "OpenCV_Duck_Test", group = "Tutorials")
 public class OpenCVDuckTest extends LinearOpMode {
@@ -101,12 +104,12 @@ public class OpenCVDuckTest extends LinearOpMode {
 
     public void testing(DuckPipeline myPipeline) {
         if (lowerruntime + 0.05 < getRuntime()) {
-            CrLowerUpdate += -gamepad1.left_stick_y;
+            CrLowerUpdate -= gamepad1.left_stick_y;
             CbLowerUpdate += gamepad1.left_stick_x;
             lowerruntime = getRuntime();
         }
         if (upperruntime + 0.05 < getRuntime()) {
-            CrUpperUpdate += -gamepad1.right_stick_y;
+            CrUpperUpdate -= gamepad1.right_stick_y;
             CbUpperUpdate += gamepad1.right_stick_x;
             upperruntime = getRuntime();
         }
@@ -125,7 +128,15 @@ public class OpenCVDuckTest extends LinearOpMode {
         telemetry.addData("UpperCb ", (int) CbUpperUpdate);
     }
 
-    public Double inValues(double value, double min, double max) {
+    /**
+     * Thresholds value between min and max
+     *
+     * @param value The value to be thresholded
+     * @param min   The minimum acceptable value
+     * @param max   The maximum acceptable value
+     * @return Value if it is between min and max, max if value > max, or min if value < min
+     */
+    private double inValues(double value, double min, double max) {
         if (value < min) {
             value = min;
         }
@@ -135,15 +146,24 @@ public class OpenCVDuckTest extends LinearOpMode {
         return value;
     }
 
-    public void AUTONOMOUS_A() {
+    /**
+     * A dummy autonomous to demonstrate that path A was taken
+     */
+    private void AUTONOMOUS_A() {
         telemetry.addLine("Autonomous A");
     }
 
-    public void AUTONOMOUS_B() {
+    /**
+     * A dummy autonomous to demonstrate that path B was taken
+     */
+    private void AUTONOMOUS_B() {
         telemetry.addLine("Autonomous B");
     }
 
-    public void AUTONOMOUS_C() {
+    /**
+     * A dummy autonomous to demonstrate that path C was taken
+     */
+    private void AUTONOMOUS_C() {
         telemetry.addLine("Autonomous C");
     }
 }

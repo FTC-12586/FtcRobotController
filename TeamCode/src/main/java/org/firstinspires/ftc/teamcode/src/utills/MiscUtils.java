@@ -113,6 +113,13 @@ public class MiscUtils {
         return ((angle - robotRot) % 360);
     }
 
+    /**
+     * Returns the relative class name of the object. For instance, passing an object of type
+     * {@link org.firstinspires.ftc.teamcode.src.utills.Executable} will return "Executable" as a string
+     *
+     * @param o An Object
+     * @return The relative name of the Object's class
+     */
     public static String getRelativeClassName(Object o) {
         String cName = o.getClass().toString();
         String[] cNameSplit = cName.split("\\.");
@@ -141,6 +148,8 @@ public class MiscUtils {
      *
      * @param member    The object whose class has a static member
      * @param fieldName The name of the static member to get
+     * @throws NoSuchFieldException Signals that the class doesn't have a field of a specified name.
+     * @throws IllegalAccessException An IllegalAccessException is thrown when trying to set or get a field, or invoke a method, but the currently executing method does not have access to the definition of the specified class, field, method or constructor.
      * @return The value in the static member
      */
     public static Object getStaticMemberFromObject(Object member, String fieldName) throws NoSuchFieldException, IllegalAccessException {

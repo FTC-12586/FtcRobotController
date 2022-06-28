@@ -5,6 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.src.utills.opModeTemplate.TeleOpTemplate;
 
+/**
+ * A basic OpMode to test the Tape Measure Turret
+ */
 @Disabled
 @TeleOp(name = "\u0000TapeMeasureTurretTest")
 public class TapeMeasureTurretTest extends TeleOpTemplate {

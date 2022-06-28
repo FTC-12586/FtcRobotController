@@ -40,6 +40,7 @@ public class TeleopDriveTrain extends BasicDrivetrain {
      * @param frontLeft   The name of the front left motor
      * @param backRight   The name of the back right motor
      * @param backLeft    The name of the back left motor
+     * @param driveEncoders If true, the motors are initialized with drive encoders on. If it is false, the drive encoders are left off
      */
     public TeleopDriveTrain(HardwareMap hardwareMap, String frontRight, String frontLeft, String backRight, String backLeft, boolean driveEncoders) {
         front_right = hardwareMap.dcMotor.get(frontRight);

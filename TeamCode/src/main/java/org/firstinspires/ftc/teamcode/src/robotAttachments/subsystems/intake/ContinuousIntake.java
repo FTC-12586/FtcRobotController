@@ -7,6 +7,9 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+/**
+ * Continuous intake with two intake motors
+ */
 public class ContinuousIntake implements Intake {
     /**
      * The power for going forward for the front motor
@@ -29,6 +32,13 @@ public class ContinuousIntake implements Intake {
     private final DcMotor backIntakeMotor;
 
 
+    /**
+     * Initializes Class
+     *
+     * @param hardwareMap    A opMode hardware map
+     * @param frontMotorName Name of the front intake motor
+     * @param backMotorName  Name of the back intake motor
+     */
     public ContinuousIntake(HardwareMap hardwareMap, String frontMotorName, String backMotorName) {
         frontIntakeMotor = hardwareMap.dcMotor.get(frontMotorName);
         frontIntakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -54,10 +64,16 @@ public class ContinuousIntake implements Intake {
         backIntakeMotor.setPower(power * backMotorForwardPower);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void halt() {
         setMotorPower(0);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Void gamepadControl(@NonNull Gamepad gamepad1, @NonNull Gamepad gamepad2) {
 
@@ -70,10 +86,16 @@ public class ContinuousIntake implements Intake {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setFrontMotorPower(double power) {
         frontIntakeMotor.setPower(power);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setBackMotorPower(double power) {
         backIntakeMotor.setPower(power);
     }

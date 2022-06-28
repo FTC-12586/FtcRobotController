@@ -51,6 +51,7 @@ public class CarouselSpinnerImpl implements CarouselSpinner {
      *
      * @param hardwareMap Hardware Map Object
      * @param spinnerOne  Name of continuous servo
+     *@param spinnerTwo  Name of continuous servo
      */
     public CarouselSpinnerImpl(HardwareMap hardwareMap, String spinnerOne, String spinnerTwo) {
         leftServo = hardwareMap.crservo.get(spinnerOne);
@@ -99,6 +100,9 @@ public class CarouselSpinnerImpl implements CarouselSpinner {
         this.halt();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void spinOffRedDuckSlow() throws InterruptedException {
         setServoPower(-0.5);
@@ -119,6 +123,9 @@ public class CarouselSpinnerImpl implements CarouselSpinner {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void spinOffBlueDuckSlow() throws InterruptedException {
         setServoPower(0.5);

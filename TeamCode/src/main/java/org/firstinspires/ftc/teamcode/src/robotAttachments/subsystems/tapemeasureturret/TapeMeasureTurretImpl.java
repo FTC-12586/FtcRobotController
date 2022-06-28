@@ -6,6 +6,9 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+/**
+ * Implementation of the TapeMeasureTurret interface
+ */
 public class TapeMeasureTurretImpl implements TapeMeasureTurret {
     public final CRServo tapeMeasure;
     private final CRServo pitch;
@@ -13,12 +16,22 @@ public class TapeMeasureTurretImpl implements TapeMeasureTurret {
 
     private double powerMultiplier = 1;
 
+    /**
+     * Constructs the TapeMeasureTurret object
+     * @param hardwareMap AN Opmode Hardware map
+     * @param tapeMeasureServoName Name of the tape measure servo
+     * @param pitchServoName Name of the Pitch Servo
+     * @param yawServoName Name of the Yaw Servo
+     */
     public TapeMeasureTurretImpl(HardwareMap hardwareMap, String tapeMeasureServoName, String pitchServoName, String yawServoName) {
         this.tapeMeasure = hardwareMap.crservo.get(tapeMeasureServoName);
         this.pitch = hardwareMap.crservo.get(pitchServoName);
         this.yaw = hardwareMap.crservo.get(yawServoName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void halt() {
         tapeMeasure.setPower(0);
         pitch.setPower(0);

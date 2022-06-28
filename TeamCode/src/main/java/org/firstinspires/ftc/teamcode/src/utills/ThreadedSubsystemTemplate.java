@@ -60,9 +60,10 @@ public abstract class ThreadedSubsystemTemplate extends Thread implements Thread
                 Thread.sleep(sleepTime);
             }
         } catch (InterruptedException ignored) {
+            RobotLog.d("Thread: " + Thread.currentThread().getName() + " has been interrupted");
         } catch (Throwable t) {
             RobotLog.addGlobalWarningMessage("Side Ran Thread Crashed because thrown Throwable: " + t.getClass());
-            RobotLog.dd("Failure", t, "Fix Me Jacob");
+            RobotLog.dd("Failure", t, "Fix Me");
         }
 
     }

@@ -8,7 +8,8 @@ import java.lang.annotation.Target;
 
 /**
  * This is a verbatim copy of android.annotation.SuppressLint
- * I made this because Java Doc could not find the android annotation package
+ * I made this because Java Doc could not find the android annotation package and would complain
+ * when generating a Java Doc
  */
 @Target({ElementType.TYPE, ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.CONSTRUCTOR, ElementType.LOCAL_VARIABLE})
 @Retention(RetentionPolicy.CLASS)

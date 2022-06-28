@@ -8,6 +8,9 @@ import org.firstinspires.ftc.teamcode.src.robotAttachments.subsystems.outtake.Ou
 import org.firstinspires.ftc.teamcode.src.utills.Executable;
 import org.firstinspires.ftc.teamcode.src.utills.enums.FreightFrenzyGameObject;
 
+/**
+ * Throws if the intake is no longer empty
+ */
 public class IntakeColorSensorWarning extends MovementWarning {
     /**
      * Internal intake to monitor
